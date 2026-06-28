@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export async function POST(request) {
   try {
-    // Secret verify
+    // Verify bot secret
     const secret = request.headers.get("x-bot-secret");
 
     if (secret !== process.env.BOT_SECRET) {
@@ -13,29 +13,62 @@ export async function POST(request) {
       );
     }
 
-    // Receive data
     const { ign, tier, gamemode } = await request.json();
 
-    // Update correct tier column
+    // Check if player already exists
+    const { data: existingPlayer, error: fetchError } = await supabase
+      .from("players")
+      .select("ign")
+      .eq("ign", ign)
+      .single();
+
+    if (fetchError && fetchError.code !== "PGRST116") {
+      console.error(fetchError);
+      return NextResponse.json(
+        { error: fetchError.message },
+        { status: 500 }
+      );
+    }
+
+    // Create player automatically if missing
+    if (!existingPlayer) {
+      const { error: insertError } = await supabase
+        .from("players")
+        .insert({
+          ign: ign,
+        });
+
+      if (insertError) {
+        console.error(insertError);
+        return NextResponse.json(
+          { error: insertError.message },
+          { status: 500 }
+        );
+      }
+    }
+
+    // Update tier
     const updateData = {};
     updateData[`${gamemode}_tier`] = tier;
 
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from("players")
       .update(updateData)
       .eq("ign", ign);
 
-    if (error) {
-      console.error(error);
-
+    if (updateError) {
+      console.error(updateError);
       return NextResponse.json(
-        { error: error.message },
+        { error: updateError.message },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
+      player: ign,
+      tier,
+      gamemode,
     });
 
   } catch (err) {
