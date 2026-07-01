@@ -16,7 +16,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-8xl font-black tracking-tight">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black">
             <span className="text-red-600 drop-shadow-[0_0_25px_red]">
               Kairo
             </span>

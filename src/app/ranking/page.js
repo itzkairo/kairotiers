@@ -65,7 +65,7 @@ const filteredPlayers = sortedPlayers.filter(
             initial={{ opacity: 0, y: -35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl font-black mb-10"
+           className="text-3xl sm:text-4xl md:text-5xl font-black mb-8 md:mb-10"
           >
             <span className="text-red-600 drop-shadow-[0_0_18px_red]">
               Player
@@ -108,8 +108,8 @@ const filteredPlayers = sortedPlayers.filter(
   <>
     {/* Header */}
 
-    <div className="grid grid-cols-[80px_1fr_120px_120px] px-6 py-4 bg-[#1D1D1D] text-gray-400 font-bold uppercase tracking-wider rounded-t-2xl">
-
+    
+<div className="hidden md:grid grid-cols-[80px_1fr_120px_120px] px-6 py-4 bg-[#1D1D1D] text-gray-400 font-bold uppercase tracking-wider rounded-t-2xl">
       <div>#</div>
       <div>Player</div>
       <div>Tier</div>
