@@ -227,3 +227,7 @@ html,
 body {
   overflow-x: hidden !important;
 }
+html,
+body {
+  overflow-y: scroll;
+}
