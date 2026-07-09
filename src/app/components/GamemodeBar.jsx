@@ -5,10 +5,10 @@ const modes = [
   { name: "Sword", icon: "/icons/sword.svg" },
   { name: "Axe", icon: "/icons/axe.svg" },
   { name: "Mace", icon: "/icons/mace.svg" },
-  { name: "Pot", icon: "/icons/pot.svg" },
+  { name: "diapot", icon: "/icons/diapot.svg" },
   { name: "NethPot", icon: "/icons/nethpot.svg" },
   { name: "SMP", icon: "/icons/smp.svg" },
-  { name: "Vanilla", icon: "/icons/vanilla.svg" },
+  { name: "Crystal", icon: "/icons/crystal.svg" },
   { name: "UHC", icon: "/icons/uhc.svg" },
 ];
 

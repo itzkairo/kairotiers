@@ -112,8 +112,6 @@ const filteredPlayers = sortedPlayers.filter(
 <div className="hidden md:grid grid-cols-[80px_1fr_120px_120px] px-6 py-4 bg-[#1D1D1D] text-gray-400 font-bold uppercase tracking-wider rounded-t-2xl">
       <div>#</div>
       <div>Player</div>
-      <div>Tier</div>
-      <div>Points</div>
 
     </div>
 

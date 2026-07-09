@@ -4,11 +4,11 @@ const modes = [
   { icon: "/icons/sword.svg", key: "sword" },
   { icon: "/icons/axe.svg", key: "axe" },
   { icon: "/icons/mace.svg", key: "mace" },
-  { icon: "/icons/pot.svg", key: "pot" },
+  { icon: "/icons/diapot.svg", key: "diapot" },
   { icon: "/icons/nethpot.svg", key: "nethpot" },
   { icon: "/icons/smp.svg", key: "smp" },
   { icon: "/icons/uhc.svg", key: "uhc" },
-  { icon: "/icons/vanilla.svg", key: "vanilla" },
+  { icon: "/icons/crystal.svg", key: "crystal" },
 ];
 
 export default function PlayerRow({ player, rank, mode }) {
@@ -104,15 +104,20 @@ export default function PlayerRow({ player, rank, mode }) {
         </div>
 
         {/* Tier */}
-        <div className="text-center">
-          <span className="bg-red-600 px-4 py-2 rounded-lg font-bold shadow-[0_0_18px_rgba(255,0,0,.45)]">
-            {player[mode].tier}
-          </span>
-        </div>
+<div className="text-center">
+  {mode === "overall" ? (
+    <span className="font-bold text-yellow-400">
+      {player[mode].points}
+    </span>
+  ) : (
+    <span className="bg-red-600 px-4 py-2 rounded-lg font-bold shadow-[0_0_18px_rgba(255,0,0,.45)]">
+      {player[mode].tier}
+    </span>
+  )}
+</div>
 
         {/* Points */}
         <div className="text-center font-bold text-yellow-400">
-          {player[mode].points}
         </div>
 
         {/* All Gamemodes */}

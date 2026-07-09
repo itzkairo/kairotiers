@@ -48,21 +48,21 @@ export async function getPlayers() {
     const sword = getPoints(player.sword_tier);
     const axe = getPoints(player.axe_tier);
     const mace = getPoints(player.mace_tier);
-    const pot = getPoints(player.pot_tier);
+    const diapot = getPoints(player.diapot_tier);
     const nethpot = getPoints(player.nethpot_tier);
     const smp = getPoints(player.smp_tier);
     const uhc = getPoints(player.uhc_tier);
-    const vanilla = getPoints(player.vanilla_tier);
+    const crystal = getPoints(player.crystal_tier);
 
     const overall =
       sword +
       axe +
       mace +
-      pot +
+      diapot +
       nethpot +
       smp +
       uhc +
-      vanilla;
+      crystal;
 
     return {
       ign: player.ign,
@@ -86,9 +86,9 @@ export async function getPlayers() {
         points: mace,
       },
 
-      pot: {
-        tier: player.pot_tier,
-        points: pot,
+      diapot: {
+        tier: player.diapot_tier,
+        points: diapot,
       },
 
       nethpot: {
@@ -106,9 +106,9 @@ export async function getPlayers() {
         points: uhc,
       },
 
-      vanilla: {
-        tier: player.vanilla_tier,
-        points: vanilla,
+      crystal: {
+        tier: player.crystal_tier,
+        points: crystal,
       },
     };
   });

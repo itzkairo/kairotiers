@@ -102,8 +102,8 @@ export default function PlayerPopup({
 />
 
 <Game
-  icon="/icons/pot.svg"
-  tier={player.pot?.tier}
+  icon="/icons/diapot.svg"
+  tier={player.diapot ?.tier}
 />
 
 <Game
@@ -122,8 +122,8 @@ export default function PlayerPopup({
 />
 
 <Game
-  icon="/icons/vanilla.svg"
-  tier={player.vanilla?.tier}
+  icon="/icons/crystal.svg"
+  tier={player.crystal?.tier}
 />
 
                   </div>
