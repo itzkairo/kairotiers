@@ -21,7 +21,12 @@ export default function Navbar() {
           <Link href="/ranking" className="hover:text-red-500 duration-300">
             Ranking
           </Link>
-
+<Link
+  href="/hall-of-fame"
+  className="hover:text-red-500 transition duration-300"
+>
+  Hall Of Fame
+</Link>
           <a
             href="https://discord.gg/97DWkXA5b"
             target="_blank"
@@ -34,34 +39,40 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile */}
-      <div className="md:hidden h-full grid grid-cols-3 items-center px-4">
+{/* Mobile */}
+<div className="md:hidden h-full flex items-center justify-center gap-2 px-3">
 
-        <a
-          href="https://discord.gg/97DWkXA5b"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-semibold hover:text-red-500"
-        >
-          Discord
-        </a>
+  <Link
+    href="/"
+    className="px-3 py-2 rounded-xl bg-[#181818] border border-[#2b2b2b] text-xs font-semibold hover:border-red-600 hover:bg-[#202020] transition-all duration-300"
+  >
+    Home
+  </Link>
 
-        <Link
-          href="/"
-          className="text-center text-xl font-black"
-        >
-          <span className="text-red-600">Kairo</span>
-          <span className="text-white">Tiers</span>
-        </Link>
+  <Link
+    href="/ranking"
+    className="px-3 py-2 rounded-xl bg-[#181818] border border-[#2b2b2b] text-xs font-semibold hover:border-red-600 hover:bg-[#202020] transition-all duration-300"
+  >
+    Ranking
+  </Link>
 
-        <Link
-          href="/ranking"
-          className="text-right text-sm font-semibold hover:text-red-500"
-        >
-          Ranking
-        </Link>
+  <Link
+    href="/hall-of-fame"
+    className="px-3 py-2 rounded-xl bg-[#181818] border border-[#2b2b2b] text-xs font-semibold hover:border-red-600 hover:bg-[#202020] transition-all duration-300"
+  >
+    Hall Of Fame
+  </Link>
 
-      </div>
+  <a
+    href="https://discord.gg/97DWkXA5b"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-3 py-2 rounded-xl bg-red-600 text-xs font-semibold hover:bg-red-700 transition-all duration-300"
+  >
+    Discord
+  </a>
+
+</div>
 
     </nav>
   );
