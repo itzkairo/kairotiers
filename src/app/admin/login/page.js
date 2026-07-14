@@ -11,7 +11,7 @@ export default function AdminLogin() {
 
   const handleLogin = () => {
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      localStorage.setItem("kairo_admin", process.env.NEXT_PUBLIC_ADMIN_PASSWORD);
+      document.cookie = `kairo_admin=${process.env.NEXT_PUBLIC_ADMIN_PASSWORD}; path=/; max-age=3600; SameSite=Lax`;
       router.push("/admin/dashboard");
     } else {
       setError("Incorrect Password");

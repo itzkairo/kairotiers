@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 import {
   getHallOfFame,
@@ -10,8 +9,6 @@ import {
 } from "../../../lib/hallOfFameService";
 
 export default function AdminPanel() {
-  const router = useRouter();
-
   const [players, setPlayers] = useState([]);
 
   const [ign, setIgn] = useState("");
@@ -25,13 +22,6 @@ export default function AdminPanel() {
   }
 
   useEffect(() => {
-    const logged = localStorage.getItem("kairo_admin");
-
-    if (logged !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      router.push("/admin/login");
-      return;
-    }
-
     loadPlayers();
   }, []);
 
