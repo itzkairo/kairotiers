@@ -7,7 +7,7 @@ import {
   getHallOfFame,
   addHallPlayer,
   deleteHallPlayer,
-} from "../../../lib/hallOfFameService";Pan
+} from "../../../lib/hallOfFameService";
 
 export default function AdminPanel() {
   const router = useRouter();
