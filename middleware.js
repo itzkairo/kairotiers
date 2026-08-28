@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  if (!request.nextUrl.pathname.startsWith("/admin/dashboard")) {
-    return NextResponse.next();
-  }
+  const { pathname } = request.nextUrl;
 
-  const adminCookie = request.cookies.get("kairo_admin")?.value;
-  const expectedPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+  // Only protect admin dashboard
+  if (pathname.startsWith("/admin/dashboard")) {
+    const adminCookie = request.cookies.get("kairo_admin")?.value;
+    const expectedPassword = process.env.ADMIN_PASSWORD;
 
-  if (adminCookie !== expectedPassword) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    // Not logged in
+    if (!adminCookie || adminCookie !== expectedPassword) {
+      return NextResponse.redirect(
+        new URL("/admin/login", request.url)
+      );
+    }
   }
 
   return NextResponse.next();

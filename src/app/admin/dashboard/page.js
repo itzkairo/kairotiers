@@ -16,9 +16,15 @@ export default function AdminPanel() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   async function loadPlayers() {
-    const data = await getHallOfFame();
-    setPlayers(data);
+    try {
+      const data = await getHallOfFame();
+      setPlayers(data || []);
+    } catch (error) {
+      console.error("Failed to load Hall Of Fame:", error);
+    }
   }
 
   useEffect(() => {
@@ -26,141 +32,273 @@ export default function AdminPanel() {
   }, []);
 
   async function handleAdd() {
-    if (!ign || !title) return;
+    if (!ign.trim() || !title.trim()) {
+      alert("Minecraft IGN and Title are required.");
+      return;
+    }
 
-    await addHallPlayer({
-      ign,
-      title,
-      description,
-      image,
-    });
+    try {
+      setLoading(true);
 
-    setIgn("");
-    setTitle("");
-    setDescription("");
-    setImage("");
+      await addHallPlayer({
+        ign: ign.trim(),
+        title: title.trim(),
+        description: description.trim(),
+        image: image.trim(),
+      });
 
-    loadPlayers();
+      setIgn("");
+      setTitle("");
+      setDescription("");
+      setImage("");
+
+      await loadPlayers();
+    } catch (error) {
+      console.error("Failed to add Hall Of Fame player:", error);
+      alert("Failed to add player.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleDelete(id) {
-    if (!confirm("Delete this player?")) return;
+    if (!confirm("Are you sure you want to delete this player?")) {
+      return;
+    }
 
-    await deleteHallPlayer(id);
-    loadPlayers();
+    try {
+      await deleteHallPlayer(id);
+      await loadPlayers();
+    } catch (error) {
+      console.error("Failed to delete Hall Of Fame player:", error);
+      alert("Failed to delete player.");
+    }
   }
 
   return (
-    <main className="min-h-screen bg-[#0B0B0B] text-white p-10">
+    <main className="min-h-screen bg-[#0B0B0B] text-white p-4 sm:p-8 md:p-10">
 
-      <h1 className="text-5xl font-black mb-10">
-        <span className="text-red-600">Admin</span> Panel
-      </h1>
+      <div className="max-w-[1100px] mx-auto">
 
-      <div className="bg-[#151515] border border-red-700 rounded-2xl p-8">
+        <h1 className="text-4xl sm:text-5xl font-black mb-8">
+          <span className="text-red-600">Admin</span>{" "}
+          <span className="text-white">Panel</span>
+        </h1>
 
-        <h2 className="text-2xl font-bold mb-6">
-          Hall Of Fame
-        </h2>
+        <div className="bg-[#151515] border border-[#2d1719] rounded-2xl p-5 sm:p-8">
 
-        <div className="grid gap-4">
+          <h2 className="text-2xl font-bold mb-6">
+            Hall Of Fame
+          </h2>
 
-          <input
-            value={ign}
-            onChange={(e) => setIgn(e.target.value)}
-            placeholder="Minecraft IGN"
-            className="bg-[#101010] p-4 rounded-xl"
-          />
+          {/* ADD PLAYER */}
 
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            className="bg-[#101010] p-4 rounded-xl"
-          />
+          <div className="grid gap-4">
 
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-            className="bg-[#101010] p-4 rounded-xl"
-          />
+            <input
+              value={ign}
+              onChange={(e) => setIgn(e.target.value)}
+              placeholder="Minecraft IGN"
+              className="
+                w-full
+                bg-[#101010]
+                border border-[#303030]
+                focus:border-red-600
+                outline-none
+                p-4
+                rounded-xl
+                text-white
+                transition
+              "
+            />
 
-          <input
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="Image URL (optional)"
-            className="bg-[#101010] p-4 rounded-xl"
-          />
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              className="
+                w-full
+                bg-[#101010]
+                border border-[#303030]
+                focus:border-red-600
+                outline-none
+                p-4
+                rounded-xl
+                text-white
+                transition
+              "
+            />
 
-          <button
-            onClick={handleAdd}
-            className="bg-red-600 hover:bg-red-700 rounded-xl py-4 font-bold"
-          >
-            + Add Player
-          </button>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+              rows={4}
+              className="
+                w-full
+                bg-[#101010]
+                border border-[#303030]
+                focus:border-red-600
+                outline-none
+                p-4
+                rounded-xl
+                text-white
+                resize-none
+                transition
+              "
+            />
 
-        </div>
+            <input
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              placeholder="Image URL (optional)"
+              className="
+                w-full
+                bg-[#101010]
+                border border-[#303030]
+                focus:border-red-600
+                outline-none
+                p-4
+                rounded-xl
+                text-white
+                transition
+              "
+            />
 
-        <div className="mt-10 space-y-4"></div>
-        {players.length === 0 ? (
-
-          <p className="text-gray-500 text-center py-8">
-            No Hall Of Fame Players
-          </p>
-
-        ) : (
-
-          players.map((player) => (
-
-            <div
-              key={player.id}
-              className="flex items-center justify-between bg-[#101010] border border-[#2A2A2A] rounded-xl p-4"
+            <button
+              onClick={handleAdd}
+              disabled={loading}
+              className="
+                bg-red-600
+                hover:bg-red-700
+                disabled:opacity-50
+                disabled:cursor-not-allowed
+                rounded-xl
+                py-4
+                font-bold
+                transition
+              "
             >
+              {loading ? "Adding..." : "+ Add Player"}
+            </button>
 
-              <div className="flex items-center gap-4">
+          </div>
 
-                <img
-                  src={
-                    player.image ||
-                    `https://mc-heads.net/avatar/${player.ign}/64`
-                  }
-                  alt={player.ign}
-                  className="w-14 h-14 rounded-lg"
-                />
 
-                <div>
+          {/* PLAYERS */}
 
-                  <h3 className="text-xl font-bold">
-                    {player.ign}
-                  </h3>
+          <div className="mt-10 space-y-4">
 
-                  <p className="text-red-500">
-                    {player.title}
-                  </p>
+            {players.length === 0 ? (
 
-                  <p className="text-gray-400 text-sm">
-                    {player.description}
-                  </p>
+              <div className="
+                text-center
+                py-12
+                rounded-xl
+                border
+                border-dashed
+                border-[#333]
+                bg-[#101010]
+              ">
+                <p className="text-gray-500">
+                  No Hall Of Fame Players
+                </p>
+              </div>
+
+            ) : (
+
+              players.map((player) => (
+
+                <div
+                  key={player.id}
+                  className="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between
+                    gap-4
+                    bg-[#101010]
+                    border
+                    border-[#2A2A2A]
+                    hover:border-[#4a2022]
+                    rounded-xl
+                    p-4
+                    transition
+                  "
+                >
+
+                  <div className="flex items-center gap-4 min-w-0">
+
+                    <img
+                      src={
+                        player.image ||
+                        `https://mc-heads.net/avatar/${player.ign}/64`
+                      }
+                      alt={player.ign}
+                      className="
+                        w-14
+                        h-14
+                        shrink-0
+                        rounded-lg
+                        border
+                        border-[#303030]
+                        object-cover
+                      "
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          "https://mc-heads.net/avatar/Steve/64";
+                      }}
+                    />
+
+                    <div className="min-w-0">
+
+                      <h3 className="text-xl font-bold truncate">
+                        {player.ign}
+                      </h3>
+
+                      <p className="text-red-500 font-semibold">
+                        {player.title}
+                      </p>
+
+                      {player.description && (
+                        <p className="text-gray-400 text-sm mt-1">
+                          {player.description}
+                        </p>
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(player.id)}
+                    className="
+                      shrink-0
+                      bg-red-600
+                      hover:bg-red-700
+                      px-5
+                      py-2.5
+                      rounded-lg
+                      font-bold
+                      transition
+                    "
+                  >
+                    Delete
+                  </button>
 
                 </div>
 
-              </div>
+              ))
 
-              <button
-                onClick={() => handleDelete(player.id)}
-                className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-bold transition"
-              >
-                Delete
-              </button>
+            )}
 
-            </div>
+          </div>
 
-          ))
-
-        )}
+        </div>
 
       </div>
-    </main >
+
+    </main>
   );
 }

@@ -1,97 +1,112 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
-import { getHallOfFame } from "../../lib/hallOfFameService";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function HallOfFame() {
-  const [players, setPlayers] = useState([]);
+export default function AdminLogin() {
+  const router = useRouter();
 
-  useEffect(() => {
-    async function load() {
-      const data = await getHallOfFame();
-      setPlayers(data);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!password) {
+      setError("Please enter your password.");
+      return;
     }
 
-    load();
-  }, []);
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Incorrect Password");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/admin/dashboard");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong.");
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <Navbar />
+    <main className="min-h-screen flex items-center justify-center bg-[#0B0B0B] px-4">
+      <div className="w-full max-w-md bg-[#151515] border border-red-700 rounded-2xl p-8 shadow-[0_0_40px_rgba(220,38,38,0.12)]">
 
-      <main className="min-h-screen bg-gradient-to-b from-[#080808] via-[#0F0F0F] to-[#050505] text-white pt-28 px-6">
+        <h1 className="text-4xl font-black text-center mb-8">
+          <span className="text-red-600">Admin</span>{" "}
+          <span className="text-white">Login</span>
+        </h1>
 
-        <div className="max-w-7xl mx-auto">
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleLogin();
+            }
+          }}
+          className="
+            w-full
+            p-4
+            rounded-xl
+            bg-[#101010]
+            border
+            border-[#333]
+            text-white
+            outline-none
+            focus:border-red-600
+            transition
+          "
+        />
 
-          <h1 className="text-5xl font-black mb-12 text-center">
+        {error && (
+          <p className="text-red-500 mt-3 text-sm">
+            {error}
+          </p>
+        )}
 
-            <span className="text-yellow-400">
-              Hall
-            </span>{" "}
+        <button
+          onClick={handleLogin}
+          disabled={loading}
+          className="
+            mt-6
+            w-full
+            bg-red-600
+            hover:bg-red-700
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            transition
+            rounded-xl
+            py-4
+            font-bold
+            text-lg
+          "
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
 
-            <span className="text-red-600">
-              Of
-            </span>{" "}
-
-            <span className="text-white">
-              Fame
-            </span>
-
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-  {players.map((player) => (
-
-    <motion.div
-      key={player.id}
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.5,
-        ease: "easeOut",
-      }}
-      whileHover={{
-        y: -10,
-        scale: 1.03,
-      }}
-      className="group relative overflow-hidden rounded-3xl border border-[#2d2d2d] bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f] p-8 transition-all duration-300 hover:border-red-600 hover:shadow-[0_0_35px_rgba(220,38,38,.25)]"
-    >
-
-      <img
-        src={
-          player.image
-            ? player.image
-            : `https://mc-heads.net/avatar/${player.ign}/128`
-        }
-        alt={player.ign}
-        className="w-32 h-32 mx-auto rounded-2xl border border-red-700 p-1 mb-6 transition duration-300 group-hover:scale-105"
-      />
-
-      <h2 className="text-4xl font-black tracking-wide text-center text-white">
-        {player.ign}
-      </h2>
-
-      <p className="text-red-500 uppercase tracking-[3px] text-sm text-center mt-3 font-bold">
-        {player.title}
-      </p>
-
-      <p className="text-gray-400 text-center mt-6 leading-7">
-        {player.description}
-      </p>
-
-    </motion.div>
-
-  ))}
-
-</div>
-</div>
-
-</main>
-
-</>
-);
+      </div>
+    </main>
+  );
 }
