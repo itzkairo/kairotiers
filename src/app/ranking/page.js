@@ -90,20 +90,72 @@ function RankingContent() {
   return (
     <div className="min-h-screen bg-black text-white">
 
-      {/* NAVBAR */}
+      {/* ================= NAVBAR ================= */}
 
       <Navbar
         search={search}
         setSearch={setSearch}
       />
 
-      {/* RANKING AREA */}
+      {/* ================= RANKING AREA ================= */}
 
-      <main className="pt-5 md:pt-6 pb-10 px-3 sm:px-5 md:px-8">
+      <main className="pt-3 md:pt-4 pb-10 px-3 sm:px-5 md:px-8">
 
         <div className="w-full max-w-[1270px] mx-auto">
 
-          {/* MAIN RANKING CONTAINER */}
+          {/* ================= SERVER IP ================= */}
+
+          <div className="w-full flex justify-end mb-3 md:mb-4 px-1 sm:px-2">
+
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                h-10
+                md:h-11
+                px-4
+                md:px-5
+                rounded-xl
+                border
+                border-[#25282d]
+                bg-[#090b0e]
+                shadow-[0_5px_20px_rgba(0,0,0,0.35)]
+              "
+            >
+
+              {/* ONLINE DOT */}
+
+              <span
+                className="
+                  w-2.5
+                  h-2.5
+                  rounded-full
+                  bg-green-500
+                  shadow-[0_0_10px_rgba(34,197,94,0.8)]
+                  shrink-0
+                "
+              />
+
+              {/* SERVER IP */}
+
+              <span
+                className="
+                  text-sm
+                  md:text-base
+                  font-bold
+                  text-gray-200
+                  whitespace-nowrap
+                "
+              >
+                play.rearmc.club
+              </span>
+
+            </div>
+
+          </div>
+
+          {/* ================= MAIN RANKING CONTAINER ================= */}
 
           <motion.section
             initial={{ opacity: 0, y: 20 }}
@@ -117,11 +169,11 @@ function RankingContent() {
             <div
               className="
                 w-full
-                px-3
-                sm:px-5
-                md:px-8
-                py-5
-                sm:py-6
+                px-0
+                sm:px-2
+                md:px-3
+                pb-5
+                sm:pb-6
               "
             >
 
@@ -161,7 +213,7 @@ function RankingContent() {
               "
             >
 
-              {/* RED TOP LINE */}
+              {/* ================= RED TOP LINE ================= */}
 
               <div
                 className="
