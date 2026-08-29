@@ -26,66 +26,60 @@ export default function Navbar({ search, setSearch }) {
   ];
 
   return (
-    <nav className="w-full pt-4 md:pt-5 px-3 sm:px-5 relative z-50">
-      {/* ================= NAVBAR ================= */}
+    <nav className="w-full pt-4 md:pt-6 px-3 sm:px-6 relative z-50">
       <div
         className="
           w-full
           max-w-[1480px]
           mx-auto
-          min-h-[110px]
-          md:min-h-[120px]
+          h-[62px]
+          md:h-[66px]
           rounded-2xl
           border
-          border-[#292c31]
+          border-[#3a3d43]
           bg-[#080b10]/95
           backdrop-blur-xl
           shadow-[0_10px_35px_rgba(0,0,0,0.35)]
         "
       >
+
         {/* ================= DESKTOP ================= */}
-        <div
-          className="
-            hidden
-            md:flex
-            min-h-[120px]
-            items-center
-            px-6
-            lg:px-10
-            gap-6
-          "
-        >
-          {/* ================= LOGO ================= */}
+
+        <div className="hidden md:flex h-full items-center px-5 lg:px-7 relative">
+
+          {/* LOGO */}
 
           <Link
             href="/"
             className="
-              shrink-0
               text-3xl
               lg:text-4xl
               font-black
               tracking-tight
-              leading-none
+              shrink-0
             "
           >
             <span className="text-red-600">Kairo</span>
             <span className="text-white">Tiers</span>
           </Link>
 
+
           {/* ================= CENTER NAV ================= */}
 
           <div
             className="
-              flex-1
+              absolute
+              left-1/2
+              top-1/2
+              -translate-x-1/2
+              -translate-y-1/2
               flex
               items-center
-              justify-center
               gap-2
-              lg:gap-4
-              ml-4
-              lg:ml-10
+              lg:gap-3
             "
           >
+
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -96,18 +90,22 @@ export default function Navbar({ search, setSearch }) {
                   items-center
                   justify-center
                   gap-3
-                  h-14
-                  lg:h-16
+                  h-12
+                  lg:h-13
                   px-6
-                  lg:px-8
+                  lg:px-7
                   rounded-xl
+                  bg-transparent
+                  border
+                  border-transparent
                   text-gray-300
-                  font-bold
+                  font-semibold
                   text-base
                   lg:text-lg
                   whitespace-nowrap
-                  hover:bg-[#15191f]
+                  hover:bg-[#15191f]/80
                   hover:text-white
+                  hover:border-transparent
                   transition-all
                   duration-200
                 "
@@ -118,8 +116,8 @@ export default function Navbar({ search, setSearch }) {
                   className="
                     w-5
                     h-5
-                    lg:w-6
-                    lg:h-6
+                    lg:w-[21px]
+                    lg:h-[21px]
                     object-contain
                     opacity-80
                     group-hover:opacity-100
@@ -129,23 +127,14 @@ export default function Navbar({ search, setSearch }) {
                   "
                 />
 
-                <span>{item.label}</span>
+                <span>
+                  {item.label}
+                </span>
               </Link>
             ))}
-          </div>
 
-          {/* ================= RIGHT SIDE ================= */}
 
-          <div
-            className="
-              shrink-0
-              flex
-              items-center
-              gap-3
-              lg:gap-4
-            "
-          >
-            {/* ================= DISCORD ================= */}
+            {/* DISCORD */}
 
             <a
               href="https://discord.gg/EX7ZAaUyVt"
@@ -157,21 +146,22 @@ export default function Navbar({ search, setSearch }) {
                 items-center
                 justify-center
                 gap-3
-                h-[68px]
+                h-12
+                lg:h-13
                 px-6
-                lg:px-8
+                lg:px-7
                 rounded-xl
-                bg-[#ed0010]
+                bg-transparent
                 border
-                border-red-500/40
-                text-white
-                font-bold
+                border-transparent
+                text-gray-300
+                font-semibold
                 text-base
                 lg:text-lg
                 whitespace-nowrap
-                shadow-[0_0_25px_rgba(237,0,16,0.12)]
-                hover:bg-[#ff0818]
-                hover:shadow-[0_0_30px_rgba(237,0,16,0.22)]
+                hover:bg-[#15191f]/80
+                hover:text-white
+                hover:border-transparent
                 transition-all
                 duration-200
               "
@@ -182,11 +172,13 @@ export default function Navbar({ search, setSearch }) {
                 className="
                   w-5
                   h-5
-                  lg:w-6
-                  lg:h-6
+                  lg:w-[21px]
+                  lg:h-[21px]
                   object-contain
+                  opacity-80
+                  group-hover:opacity-100
                   group-hover:scale-110
-                  transition-transform
+                  transition-all
                   duration-200
                 "
               />
@@ -194,90 +186,33 @@ export default function Navbar({ search, setSearch }) {
               <span>Discord</span>
             </a>
 
-            {/* ================= IP + SEARCH ================= */}
-
-            <div
-              className="
-                flex
-                flex-col
-                gap-2
-                w-[230px]
-                lg:w-[275px]
-              "
-            >
-              {/* SERVER IP */}
-
-              <div
-                className="
-                  h-[42px]
-                  w-full
-                  rounded-xl
-                  border
-                  border-[#292c31]
-                  bg-[#0d1014]
-                  flex
-                  items-center
-                  justify-center
-                  gap-3
-                  text-gray-300
-                  font-semibold
-                  text-sm
-                  lg:text-base
-                  select-all
-                "
-              >
-                <span
-                  className="
-                    w-3
-                    h-3
-                    rounded-full
-                    bg-green-500
-                    shadow-[0_0_10px_rgba(34,197,94,0.7)]
-                  "
-                />
-
-                <span>play.rearmc.club</span>
-              </div>
-
-              {/* SEARCH */}
-
-              <div className="w-full h-[42px]">
-                <SearchBar
-                  search={search}
-                  setSearch={setSearch}
-                />
-              </div>
-            </div>
           </div>
+
+
+          {/* ================= SEARCH RIGHT ================= */}
+
+          <div className="ml-auto w-[220px] lg:w-[250px]">
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+            />
+          </div>
+
         </div>
+
 
         {/* ================= MOBILE ================= */}
 
-        <div
-          className="
-            md:hidden
-            min-h-[110px]
-            flex
-            items-center
-            justify-between
-            px-4
-          "
-        >
-          {/* MOBILE LOGO */}
+        <div className="md:hidden h-full flex items-center justify-between px-4">
 
           <Link
             href="/"
-            className="
-              text-2xl
-              sm:text-3xl
-              font-black
-              tracking-tight
-              leading-none
-            "
+            className="text-2xl font-black tracking-tight"
           >
             <span className="text-red-600">Kairo</span>
             <span className="text-white">Tiers</span>
           </Link>
+
 
           {/* HAMBURGER */}
 
@@ -285,19 +220,23 @@ export default function Navbar({ search, setSearch }) {
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
             className="
-              w-11
-              h-11
+              w-10
+              h-10
               rounded-xl
+              bg-transparent
+              border
+              border-transparent
               flex
               flex-col
               items-center
               justify-center
               gap-1.5
-              hover:bg-[#15191f]
+              hover:bg-[#15191f]/80
               transition-all
             "
             aria-label="Open navigation"
           >
+
             <span
               className={`
                 block
@@ -307,11 +246,7 @@ export default function Navbar({ search, setSearch }) {
                 rounded-full
                 transition-all
                 duration-200
-                ${
-                  menuOpen
-                    ? "rotate-45 translate-y-[5px]"
-                    : ""
-                }
+                ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}
               `}
             />
 
@@ -337,16 +272,16 @@ export default function Navbar({ search, setSearch }) {
                 rounded-full
                 transition-all
                 duration-200
-                ${
-                  menuOpen
-                    ? "-rotate-45 -translate-y-[5px]"
-                    : ""
-                }
+                ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}
               `}
             />
+
           </button>
+
         </div>
+
       </div>
+
 
       {/* ================= MOBILE MENU ================= */}
 
@@ -361,45 +296,107 @@ export default function Navbar({ search, setSearch }) {
             p-2
             rounded-2xl
             border
-            border-[#292c31]
+            border-[#353941]
             bg-[#080b10]/98
             backdrop-blur-xl
             shadow-[0_15px_40px_rgba(0,0,0,0.45)]
           "
         >
-          {/* NAV ITEMS */}
 
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              className="
-                flex
-                items-center
-                gap-4
-                px-5
-                py-4
-                rounded-xl
-                text-gray-200
-                font-semibold
-                hover:bg-[#15191f]
-                transition-all
-              "
-            >
-              <img
-                src={item.icon}
-                alt={item.label}
-                className="
-                  w-6
-                  h-6
-                  object-contain
-                "
-              />
+          {/* HOME */}
 
-              <span>{item.label}</span>
-            </Link>
-          ))}
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className="
+              flex
+              items-center
+              gap-4
+              px-5
+              py-4
+              rounded-xl
+              bg-transparent
+              border
+              border-transparent
+              hover:bg-[#15191f]/80
+              transition-all
+            "
+          >
+            <img
+              src="/icons/home.svg"
+              alt="Home"
+              className="w-6 h-6 object-contain"
+            />
+
+            <span className="text-gray-200 font-semibold text-base">
+              Home
+            </span>
+          </Link>
+
+
+          {/* RANKING */}
+
+          <Link
+            href="/ranking"
+            onClick={() => setMenuOpen(false)}
+            className="
+              flex
+              items-center
+              gap-4
+              px-5
+              py-4
+              mt-1
+              rounded-xl
+              bg-transparent
+              border
+              border-transparent
+              hover:bg-[#15191f]/80
+              transition-all
+            "
+          >
+            <img
+              src="/icons/ranking.svg"
+              alt="Ranking"
+              className="w-6 h-6 object-contain"
+            />
+
+            <span className="text-gray-200 font-semibold text-base">
+              Ranking
+            </span>
+          </Link>
+
+
+          {/* HALL OF FAME */}
+
+          <Link
+            href="/hall-of-fame"
+            onClick={() => setMenuOpen(false)}
+            className="
+              flex
+              items-center
+              gap-4
+              px-5
+              py-4
+              mt-1
+              rounded-xl
+              bg-transparent
+              border
+              border-transparent
+              hover:bg-[#15191f]/80
+              transition-all
+            "
+          >
+            <img
+              src="/icons/fame.svg"
+              alt="Hall Of Fame"
+              className="w-6 h-6 object-contain"
+            />
+
+            <span className="text-gray-200 font-semibold text-base">
+              Hall Of Fame
+            </span>
+          </Link>
+
 
           {/* DISCORD */}
 
@@ -416,56 +413,24 @@ export default function Navbar({ search, setSearch }) {
               py-4
               mt-1
               rounded-xl
-              text-gray-200
-              font-semibold
-              hover:bg-[#15191f]
+              bg-transparent
+              border
+              border-transparent
+              hover:bg-[#15191f]/80
               transition-all
             "
           >
             <img
               src="/icons/discord.svg"
               alt="Discord"
-              className="
-                w-6
-                h-6
-                object-contain
-              "
+              className="w-6 h-6 object-contain"
             />
 
-            <span>Discord</span>
+            <span className="text-gray-200 font-semibold text-base">
+              Discord
+            </span>
           </a>
 
-          {/* SERVER IP */}
-
-          <div
-            className="
-              mt-2
-              h-11
-              rounded-xl
-              border
-              border-[#292c31]
-              bg-[#0d1014]
-              flex
-              items-center
-              justify-center
-              gap-3
-              text-gray-300
-              font-semibold
-              text-sm
-            "
-          >
-            <span
-              className="
-                w-3
-                h-3
-                rounded-full
-                bg-green-500
-                shadow-[0_0_10px_rgba(34,197,94,0.7)]
-              "
-            />
-
-            <span>play.rearmc.club</span>
-          </div>
 
           {/* SEARCH */}
 
@@ -475,8 +440,10 @@ export default function Navbar({ search, setSearch }) {
               setSearch={setSearch}
             />
           </div>
+
         </div>
       )}
+
     </nav>
   );
 }
