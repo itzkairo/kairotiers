@@ -1,158 +1,172 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 
-export default function Navbar({ search = "", setSearch }) {
+export default function Navbar({ search = "", setSearch = () => {} }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
 
-  const serverIP = "play.rearmc.club";
-
-  const copyIP = async () => {
-    try {
-      await navigator.clipboard.writeText(serverIP);
-
-      setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 1500);
-    } catch (error) {
-      console.error("Failed to copy IP:", error);
-    }
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const navItems = [
+    {
+      name: "Home",
+      href: "/",
+      icon: "fa-solid fa-house",
+    },
+    {
+      name: "Ranking",
+      href: "/ranking",
+      icon: "fa-solid fa-list",
+    },
+    {
+      name: "Hall Of Fame",
+      href: "/hall-of-fame",
+      icon: "fa-solid fa-crown",
+    },
+  ];
 
   return (
-    <header className="w-full px-3 sm:px-5 pt-4">
+    <header className="w-full px-3 sm:px-5 pt-4 sm:pt-5">
       <nav
         className="
           relative
           w-full
-          max-w-[1250px]
+          max-w-[1430px]
           mx-auto
           rounded-2xl
           border
-          border-[#241719]
-          bg-[#0d0d0e]/95
-          backdrop-blur-xl
+          border-[#291719]
+          bg-[#0b0b0c]
           shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+          overflow-hidden
         "
       >
+        {/* TOP NAVIGATION */}
         <div
           className="
-            h-[68px]
-            px-4
-            sm:px-5
-            md:px-6
+            min-h-[76px]
+            px-5
+            sm:px-7
             flex
             items-center
-            gap-4
+            gap-6
+            sm:gap-10
           "
         >
           {/* LOGO */}
-
           <Link
             href="/"
-            onClick={closeMenu}
-            className="shrink-0 flex items-center"
+            className="
+              shrink-0
+              text-2xl
+              sm:text-[30px]
+              font-black
+              tracking-[-0.04em]
+              leading-none
+            "
           >
-            <span className="text-xl sm:text-2xl font-black tracking-tight">
-              <span className="text-red-600">Kairo</span>
-              <span className="text-white">Tiers</span>
-            </span>
+            <span className="text-red-600">Kairo</span>
+            <span className="text-white">Tiers</span>
           </Link>
 
           {/* DESKTOP NAV */}
+          <div className="hidden md:flex items-center gap-8 lg:gap-9">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-2.5
+                  text-[#9b9ca3]
+                  hover:text-white
+                  font-bold
+                  text-[15px]
+                  transition-colors
+                "
+              >
+                <i
+                  className={`
+                    ${item.icon}
+                    text-[14px]
+                    text-[#85868d]
+                    group-hover:text-red-500
+                    transition-colors
+                  `}
+                />
 
-          <div className="hidden md:flex items-center ml-6 gap-1">
-            <NavLink href="/" label="Home" />
-
-            <NavLink href="/ranking" label="Ranking" />
-
-            <NavLink
-              href="/hall-of-fame"
-              label="Hall Of Fame"
-            />
+                <span>{item.name}</span>
+              </Link>
+            ))}
           </div>
 
           {/* RIGHT SIDE */}
-
-          <div className="hidden md:flex items-center gap-2 ml-auto">
-
-            {/* IP */}
-
-            <button
-              onClick={copyIP}
-              title="Copy Server IP"
+          <div className="ml-auto hidden md:flex items-center gap-2.5">
+            {/* SERVER STATUS */}
+            <div
               className="
-                group
                 flex
                 items-center
-                gap-2
-                px-3.5
-                py-2.5
+                gap-2.5
+                px-4
+                py-3
                 rounded-xl
-                bg-[#151112]
                 border
-                border-[#342022]
-                hover:border-red-700
-                hover:bg-[#1a0d0f]
-                transition-all
-                duration-200
+                border-[#302021]
+                bg-[#111112]
+                text-[#dedee1]
+                font-bold
+                text-sm
+                whitespace-nowrap
               "
             >
               <span
                 className="
-                  w-2
-                  h-2
+                  w-2.5
+                  h-2.5
                   rounded-full
                   bg-green-500
-                  shadow-[0_0_9px_rgba(34,197,94,0.8)]
-                  shrink-0
+                  shadow-[0_0_10px_rgba(34,197,94,0.8)]
                 "
               />
 
-              <span className="text-sm font-bold text-gray-300 group-hover:text-white transition">
-                {copied ? "Copied!" : serverIP}
-              </span>
-            </button>
+              play.rearmc.club
+            </div>
 
             {/* DISCORD */}
-
             <a
               href="https://discord.gg/EX7ZAaUyVt"
               target="_blank"
               rel="noopener noreferrer"
               className="
-                px-4
-                py-2.5
+                flex
+                items-center
+                gap-2
+                px-5
+                py-3
                 rounded-xl
                 bg-red-600
                 hover:bg-red-700
                 border
                 border-red-500
                 text-white
+                font-black
                 text-sm
-                font-bold
                 transition-all
-                duration-200
-                shadow-[0_0_20px_rgba(220,38,38,0.12)]
+                shadow-[0_0_20px_rgba(220,38,38,0.15)]
+                hover:shadow-[0_0_25px_rgba(220,38,38,0.3)]
               "
             >
+              <i className="fa-brands fa-discord text-[15px]" />
               Discord
             </a>
           </div>
 
           {/* MOBILE MENU BUTTON */}
-
           <button
+            type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
             className="
               md:hidden
               ml-auto
@@ -160,277 +174,176 @@ export default function Navbar({ search = "", setSearch }) {
               h-10
               rounded-xl
               border
-              border-[#302020]
-              bg-[#151112]
-              flex
-              flex-col
-              items-center
-              justify-center
-              gap-1.5
+              border-[#302021]
+              bg-[#111112]
+              text-gray-300
+              hover:text-white
               hover:border-red-700
               transition
             "
+            aria-label="Toggle menu"
           >
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-white
-                transition-all
-                duration-200
-                ${menuOpen ? "rotate-45 translate-y-[4px]" : ""}
-              `}
-            />
-
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-white
-                transition-all
-                duration-200
-                ${menuOpen ? "opacity-0" : ""}
-              `}
-            />
-
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-white
-                transition-all
-                duration-200
-                ${menuOpen ? "-rotate-45 -translate-y-[4px]" : ""}
-              `}
+            <i
+              className={
+                menuOpen
+                  ? "fa-solid fa-xmark"
+                  : "fa-solid fa-bars"
+              }
             />
           </button>
         </div>
 
-        {/* SEARCH BAR */}
+        {/* SEARCH ROW */}
+        <div
+          className="
+            border-t
+            border-[#211415]
+            px-4
+            sm:px-5
+            py-3
+            bg-[#0d0d0e]
+          "
+        >
+          <div className="flex justify-end">
+            <div
+              className="
+                relative
+                w-full
+                md:w-[320px]
+                lg:w-[360px]
+              "
+            >
+              <i
+                className="
+                  fa-solid
+                  fa-magnifying-glass
+                  absolute
+                  left-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-[#555963]
+                  text-sm
+                  pointer-events-none
+                "
+              />
 
-        {setSearch && (
-          <div className="hidden md:block px-5 pb-4">
-            <div className="relative">
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search player..."
+                placeholder="Search player"
                 className="
                   w-full
-                  h-11
+                  h-[44px]
+                  pl-11
+                  pr-4
                   rounded-xl
-                  bg-[#111111]
+                  bg-[#111112]
                   border
-                  border-[#292020]
-                  px-4
-                  pr-10
-                  text-sm
+                  border-[#29292c]
                   text-white
-                  placeholder:text-gray-600
+                  placeholder:text-[#555963]
                   outline-none
                   focus:border-red-700
                   transition
+                  text-sm
                 "
               />
-
-              <svg
-                className="
-                  absolute
-                  right-4
-                  top-1/2
-                  -translate-y-1/2
-                  w-4
-                  h-4
-                  text-gray-600
-                  pointer-events-none
-                "
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.5-3.5" />
-              </svg>
             </div>
           </div>
-        )}
+        </div>
 
         {/* MOBILE MENU */}
-
         {menuOpen && (
           <div
             className="
               md:hidden
               border-t
-              border-[#241719]
+              border-[#211415]
+              bg-[#0d0d0e]
               px-4
               py-4
               space-y-2
             "
           >
-            <MobileNavLink
-              href="/"
-              label="Home"
-              onClick={closeMenu}
-            />
-
-            <MobileNavLink
-              href="/ranking"
-              label="Ranking"
-              onClick={closeMenu}
-            />
-
-            <MobileNavLink
-              href="/hall-of-fame"
-              label="Hall Of Fame"
-              onClick={closeMenu}
-            />
-
-            {/* MOBILE IP */}
-
-            <button
-              onClick={copyIP}
-              className="
-                w-full
-                flex
-                items-center
-                justify-center
-                gap-2
-                px-4
-                py-3
-                rounded-xl
-                bg-[#151112]
-                border
-                border-[#342022]
-                hover:border-red-700
-                transition
-              "
-            >
-              <span
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
                 className="
-                  w-2
-                  h-2
-                  rounded-full
-                  bg-green-500
-                  shadow-[0_0_9px_rgba(34,197,94,0.8)]
+                  flex
+                  items-center
+                  gap-3
+                  px-4
+                  py-3
+                  rounded-xl
+                  text-gray-400
+                  hover:text-white
+                  hover:bg-[#151112]
+                  hover:border-red-900
+                  border
+                  border-transparent
+                  font-bold
+                  transition
                 "
-              />
-
-              <span className="text-sm font-bold text-gray-300">
-                {copied ? "Copied!" : serverIP}
-              </span>
-            </button>
-
-            {/* MOBILE DISCORD */}
-
-            <a
-              href="https://discord.gg/EX7ZAaUyVt"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={closeMenu}
-              className="
-                block
-                w-full
-                text-center
-                px-4
-                py-3
-                rounded-xl
-                bg-red-600
-                hover:bg-red-700
-                text-white
-                font-bold
-                transition
-              "
-            >
-              Discord
-            </a>
-
-            {/* MOBILE SEARCH */}
-
-            {setSearch && (
-              <div className="relative pt-2">
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search player..."
-                  className="
-                    w-full
-                    h-11
-                    rounded-xl
-                    bg-[#111111]
-                    border
-                    border-[#292020]
-                    px-4
-                    text-sm
-                    text-white
-                    placeholder:text-gray-600
-                    outline-none
-                    focus:border-red-700
-                  "
+              >
+                <i
+                  className={`${item.icon} w-5 text-center text-red-500`}
                 />
+
+                {item.name}
+              </Link>
+            ))}
+
+            <div className="pt-2 flex gap-2">
+              <div
+                className="
+                  flex-1
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  px-3
+                  py-3
+                  rounded-xl
+                  border
+                  border-[#302021]
+                  bg-[#111112]
+                  text-gray-300
+                  text-xs
+                  font-bold
+                "
+              >
+                <span className="w-2 h-2 rounded-full bg-green-500" />
+                play.rearmc.club
               </div>
-            )}
+
+              <a
+                href="https://discord.gg/EX7ZAaUyVt"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  px-4
+                  rounded-xl
+                  bg-red-600
+                  hover:bg-red-700
+                  text-white
+                  font-bold
+                  text-sm
+                "
+              >
+                <i className="fa-brands fa-discord" />
+                Discord
+              </a>
+            </div>
           </div>
         )}
       </nav>
     </header>
-  );
-}
-
-/* ================= DESKTOP NAV LINK ================= */
-
-function NavLink({ href, label }) {
-  return (
-    <Link
-      href={href}
-      className="
-        px-3.5
-        py-2.5
-        rounded-xl
-        text-sm
-        font-bold
-        text-gray-400
-        hover:text-white
-        hover:bg-[#171112]
-        transition-all
-        duration-200
-      "
-    >
-      {label}
-    </Link>
-  );
-}
-
-/* ================= MOBILE NAV LINK ================= */
-
-function MobileNavLink({ href, label, onClick }) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="
-        block
-        w-full
-        px-4
-        py-3
-        rounded-xl
-        text-gray-300
-        font-bold
-        bg-[#111111]
-        border
-        border-[#241719]
-        hover:border-red-700
-        hover:text-white
-        transition
-      "
-    >
-      {label}
-    </Link>
   );
 }
