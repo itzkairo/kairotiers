@@ -1,65 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-export default function Navbar({ search = "", setSearch }) {
-  const pathname = usePathname();
-
-  const navItems = [
-    {
-      name: "Home",
-      href: "/",
-      icon: "fa-solid fa-house",
-    },
-    {
-      name: "Ranking",
-      href: "/ranking",
-      icon: "fa-solid fa-list",
-    },
-    {
-      name: "Hall Of Fame",
-      href: "/hall-of-fame",
-      icon: "fa-solid fa-crown",
-    },
-  ];
-
+export default function Navbar({ search = "", setSearch = () => {} }) {
   return (
-    <header className="w-full px-3 sm:px-6 pt-4">
-      <div
+    <header className="w-full px-4 sm:px-6 pt-4">
+      <nav
         className="
           w-full
           max-w-[1430px]
           mx-auto
           rounded-2xl
           border
-          border-[#252525]
-          bg-[#0b0b0b]
+          border-[#292929]
+          bg-[#0d0d0e]
           shadow-[0_10px_40px_rgba(0,0,0,0.35)]
           overflow-hidden
         "
       >
         {/* ================= TOP ROW ================= */}
-
         <div
           className="
-            min-h-[78px]
+            min-h-[86px]
             px-5
             sm:px-7
-            lg:px-8
             flex
             items-center
+            justify-between
             gap-6
           "
         >
           {/* LOGO */}
-
           <Link
             href="/"
             className="
               shrink-0
-              text-2xl
-              sm:text-3xl
+              text-3xl
+              sm:text-4xl
               font-black
               tracking-[-0.04em]
               hover:opacity-90
@@ -70,104 +47,151 @@ export default function Navbar({ search = "", setSearch }) {
             <span className="text-white">Tiers</span>
           </Link>
 
-          {/* NAVIGATION */}
-
-          <nav className="hidden md:flex items-center gap-2 ml-8">
-            {navItems.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`
-                    flex
-                    items-center
-                    gap-2.5
-                    px-4
-                    py-2.5
-                    rounded-lg
-                    text-sm
-                    lg:text-base
-                    font-bold
-                    transition-all
-                    duration-200
-                    ${
-                      active
-                        ? "text-white bg-[#171010]"
-                        : "text-gray-400 hover:text-white hover:bg-[#121212]"
-                    }
-                  `}
-                >
-                  <i
-                    className={`
-                      ${item.icon}
-                      text-[15px]
-                      ${
-                        active
-                          ? "text-red-500"
-                          : "text-gray-500"
-                      }
-                    `}
-                  />
-
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* RIGHT SIDE */}
-
-          <div className="hidden md:flex items-center gap-2 ml-auto">
-            {/* SERVER */}
-
-            <a
-              href="https://play.rearmc.club"
-              target="_blank"
-              rel="noopener noreferrer"
+          {/* NAV BUTTONS */}
+          <div className="hidden md:flex items-center gap-2">
+            <Link
+              href="/"
               className="
-                h-12
+                h-[52px]
                 px-5
                 rounded-xl
-                border
-                border-[#292929]
-                bg-[#111111]
                 flex
                 items-center
                 gap-2.5
-                text-gray-200
+                text-[16px]
                 font-bold
-                text-sm
-                hover:border-[#3b3b3b]
-                hover:bg-[#151515]
-                transition
+                text-gray-400
+                hover:text-white
+                hover:bg-[#171717]
+                transition-all
               "
             >
-              <span
-                className="
-                  w-2.5
-                  h-2.5
-                  rounded-full
-                  bg-green-500
-                  shadow-[0_0_10px_rgba(34,197,94,0.8)]
-                "
-              />
+              <i className="fa-solid fa-house text-[16px]" />
+              <span>Home</span>
+            </Link>
 
-              play.rearmc.club
-            </a>
+            <Link
+              href="/ranking"
+              className="
+                h-[52px]
+                px-5
+                rounded-xl
+                flex
+                items-center
+                gap-2.5
+                text-[16px]
+                font-bold
+                text-gray-400
+                hover:text-white
+                hover:bg-[#171717]
+                transition-all
+              "
+            >
+              <i className="fa-solid fa-list text-[16px]" />
+              <span>Ranking</span>
+            </Link>
+
+            <Link
+              href="/hall-of-fame"
+              className="
+                h-[52px]
+                px-5
+                rounded-xl
+                flex
+                items-center
+                gap-2.5
+                text-[16px]
+                font-bold
+                text-gray-400
+                hover:text-white
+                hover:bg-[#171717]
+                transition-all
+              "
+            >
+              <i className="fa-solid fa-crown text-[16px]" />
+              <span>Hall Of Fame</span>
+            </Link>
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="hidden md:flex items-center gap-3">
+
+            {/* IP + SEARCH STACK */}
+            <div className="flex flex-col items-end gap-2">
+
+              {/* SERVER IP */}
+              <div
+                className="
+                  h-[40px]
+                  px-5
+                  min-w-[205px]
+                  rounded-xl
+                  border
+                  border-[#332020]
+                  bg-[#111111]
+                  flex
+                  items-center
+                  justify-center
+                  gap-2.5
+                "
+              >
+                <span
+                  className="
+                    w-2.5
+                    h-2.5
+                    rounded-full
+                    bg-green-500
+                    shadow-[0_0_10px_rgba(34,197,94,0.8)]
+                  "
+                />
+
+                <span className="text-[15px] font-bold text-gray-200">
+                  play.rearmc.club
+                </span>
+              </div>
+
+              {/* SEARCH */}
+              <div
+                className="
+                  w-[280px]
+                  h-[42px]
+                  rounded-xl
+                  border
+                  border-[#292929]
+                  bg-[#111111]
+                  flex
+                  items-center
+                  px-4
+                  gap-3
+                "
+              >
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search player"
+                  className="
+                    flex-1
+                    min-w-0
+                    bg-transparent
+                    outline-none
+                    text-sm
+                    text-white
+                    placeholder:text-gray-600
+                  "
+                />
+
+                <i className="fa-solid fa-magnifying-glass text-gray-500 text-sm" />
+              </div>
+            </div>
 
             {/* DISCORD */}
-
             <a
               href="https://discord.gg/EX7ZAaUyVt"
               target="_blank"
               rel="noopener noreferrer"
               className="
-                h-12
+                h-[84px]
                 px-6
                 rounded-xl
                 bg-red-600
@@ -177,90 +201,122 @@ export default function Navbar({ search = "", setSearch }) {
                 flex
                 items-center
                 justify-center
+                gap-2.5
                 text-white
+                text-[16px]
                 font-black
-                text-sm
+                shadow-[0_0_25px_rgba(220,38,38,0.18)]
                 transition-all
-                shadow-[0_0_20px_rgba(220,38,38,0.15)]
               "
             >
-              Discord
+              <i className="fa-brands fa-discord text-[19px]" />
+              <span>Discord</span>
             </a>
           </div>
 
-          {/* MOBILE NAV */}
-
-          <div className="md:hidden ml-auto flex items-center gap-2">
+          {/* MOBILE MENU */}
+          <div className="md:hidden flex items-center gap-2">
             <Link
               href="/"
-              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+              className="
+                w-11
+                h-11
+                rounded-xl
+                bg-[#151515]
+                border
+                border-[#292929]
+                flex
+                items-center
+                justify-center
+                text-gray-300
+                hover:text-white
+                hover:border-red-700
+                transition
+              "
             >
-              <i className="fa-solid fa-house text-red-500" />
+              <i className="fa-solid fa-house" />
             </Link>
 
             <Link
               href="/ranking"
-              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+              className="
+                w-11
+                h-11
+                rounded-xl
+                bg-[#151515]
+                border
+                border-[#292929]
+                flex
+                items-center
+                justify-center
+                text-gray-300
+                hover:text-white
+                hover:border-red-700
+                transition
+              "
             >
-              <i className="fa-solid fa-list text-red-500" />
+              <i className="fa-solid fa-list" />
             </Link>
 
             <Link
               href="/hall-of-fame"
-              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+              className="
+                w-11
+                h-11
+                rounded-xl
+                bg-[#151515]
+                border
+                border-[#292929]
+                flex
+                items-center
+                justify-center
+                text-gray-300
+                hover:text-white
+                hover:border-red-700
+                transition
+              "
             >
-              <i className="fa-solid fa-crown text-red-500" />
+              <i className="fa-solid fa-crown" />
             </Link>
           </div>
         </div>
 
-        {/* ================= SEARCH ROW ================= */}
-
-        <div className="px-5 sm:px-6 pb-5">
-          <div className="relative w-full">
+        {/* ================= MOBILE SEARCH ================= */}
+        <div className="md:hidden px-4 pb-4">
+          <div
+            className="
+              w-full
+              h-12
+              rounded-xl
+              border
+              border-[#292929]
+              bg-[#111111]
+              flex
+              items-center
+              px-4
+              gap-3
+            "
+          >
             <input
               type="text"
               value={search}
-              onChange={(e) => {
-                if (setSearch) {
-                  setSearch(e.target.value);
-                }
-              }}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search player"
               className="
-                w-full
-                h-[52px]
-                rounded-xl
-                border
-                border-[#252525]
-                bg-[#101010]
-                px-5
-                pr-14
-                text-white
-                text-sm
+                flex-1
+                min-w-0
+                bg-transparent
                 outline-none
+                text-sm
+                text-white
                 placeholder:text-gray-600
-                focus:border-red-800
-                focus:bg-[#111111]
-                transition
               "
             />
 
-            <div
-              className="
-                absolute
-                right-5
-                top-1/2
-                -translate-y-1/2
-                text-gray-500
-                pointer-events-none
-              "
-            >
-              <i className="fa-solid fa-magnifying-glass" />
-            </div>
+            <i className="fa-solid fa-magnifying-glass text-gray-500" />
           </div>
         </div>
-      </div>
+      </nav>
     </header>
   );
 }
