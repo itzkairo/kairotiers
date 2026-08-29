@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import Navbar from "./components/Navbar";
-import ServerIP from "./components/ServerIP";
 import { getPlayers } from "../lib/playerService";
 
 const gamemodes = [
@@ -80,10 +79,6 @@ export default function Home() {
     <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
 
       <Navbar />
-
-      {/* ================= SERVER IP ================= */}
-
-      <ServerIP />
 
       <main>
 
@@ -291,6 +286,7 @@ export default function Home() {
 
         </section>
 
+
         {/* ================= STATS ================= */}
 
         <section className="px-4 sm:px-6 pb-16">
@@ -298,6 +294,8 @@ export default function Home() {
           <div className="w-full max-w-[1100px] mx-auto">
 
             <div className="grid grid-cols-2 gap-3">
+
+              {/* GAMEMODES */}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -320,6 +318,9 @@ export default function Home() {
                   {gamemodes.length}
                 </p>
               </motion.div>
+
+
+              {/* STATUS */}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -364,6 +365,7 @@ export default function Home() {
           </div>
 
         </section>
+
 
         {/* ================= TOP PLAYERS ================= */}
 
@@ -529,6 +531,7 @@ export default function Home() {
 
         </section>
 
+
         {/* ================= GAMEMODES ================= */}
 
         <section className="px-4 sm:px-6 pb-20">
@@ -624,6 +627,7 @@ export default function Home() {
           </div>
 
         </section>
+
 
         {/* ================= CTA ================= */}
 
@@ -727,6 +731,7 @@ export default function Home() {
 
       </main>
 
+
       {/* ================= FOOTER ================= */}
 
       <footer className="border-t border-[#1d1112] bg-[#050505]">
@@ -769,4 +774,4 @@ export default function Home() {
 
     </div>
   );
-}
+}   
