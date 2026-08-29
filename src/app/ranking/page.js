@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Navbar from "../components/Navbar";
+import ServerIP from "../components/ServerIP";
 import GamemodeBar from "../components/GamemodeBar";
 import PlayerRow from "../components/PlayerRow";
 import TierColumns from "../components/TierColumns";
@@ -90,20 +91,24 @@ function RankingContent() {
   return (
     <div className="min-h-screen bg-black text-white">
 
-      {/* NAVBAR */}
+      {/* ================= NAVBAR ================= */}
 
       <Navbar
         search={search}
         setSearch={setSearch}
       />
 
-      {/* RANKING AREA */}
+      {/* ================= SERVER IP ================= */}
+
+      <ServerIP />
+
+      {/* ================= RANKING AREA ================= */}
 
       <main className="pt-5 md:pt-6 pb-10 px-3 sm:px-5 md:px-8">
 
         <div className="w-full max-w-[1270px] mx-auto">
 
-          {/* MAIN RANKING CONTAINER */}
+          {/* ================= MAIN RANKING CONTAINER ================= */}
 
           <motion.section
             initial={{ opacity: 0, y: 20 }}
@@ -161,7 +166,7 @@ function RankingContent() {
               "
             >
 
-              {/* RED TOP LINE */}
+              {/* ================= RED TOP LINE ================= */}
 
               <div
                 className="
