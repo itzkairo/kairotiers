@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 
-export default function Navbar({ search = "", setSearch = () => {} }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar({ search = "", setSearch }) {
+  const pathname = usePathname();
 
   const navItems = [
     {
@@ -25,100 +25,126 @@ export default function Navbar({ search = "", setSearch = () => {} }) {
   ];
 
   return (
-    <header className="w-full px-3 sm:px-5 pt-4 sm:pt-5">
-      <nav
+    <header className="w-full px-3 sm:px-6 pt-4">
+      <div
         className="
-          relative
           w-full
           max-w-[1430px]
           mx-auto
           rounded-2xl
           border
-          border-[#291719]
-          bg-[#0b0b0c]
+          border-[#252525]
+          bg-[#0b0b0b]
           shadow-[0_10px_40px_rgba(0,0,0,0.35)]
           overflow-hidden
         "
       >
-        {/* TOP NAVIGATION */}
+        {/* ================= TOP ROW ================= */}
+
         <div
           className="
-            min-h-[76px]
+            min-h-[78px]
             px-5
             sm:px-7
+            lg:px-8
             flex
             items-center
             gap-6
-            sm:gap-10
           "
         >
           {/* LOGO */}
+
           <Link
             href="/"
             className="
               shrink-0
               text-2xl
-              sm:text-[30px]
+              sm:text-3xl
               font-black
               tracking-[-0.04em]
-              leading-none
+              hover:opacity-90
+              transition
             "
           >
             <span className="text-red-600">Kairo</span>
             <span className="text-white">Tiers</span>
           </Link>
 
-          {/* DESKTOP NAV */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-9">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="
-                  group
-                  flex
-                  items-center
-                  gap-2.5
-                  text-[#9b9ca3]
-                  hover:text-white
-                  font-bold
-                  text-[15px]
-                  transition-colors
-                "
-              >
-                <i
-                  className={`
-                    ${item.icon}
-                    text-[14px]
-                    text-[#85868d]
-                    group-hover:text-red-500
-                    transition-colors
-                  `}
-                />
+          {/* NAVIGATION */}
 
-                <span>{item.name}</span>
-              </Link>
-            ))}
-          </div>
+          <nav className="hidden md:flex items-center gap-2 ml-8">
+            {navItems.map((item) => {
+              const active =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`
+                    flex
+                    items-center
+                    gap-2.5
+                    px-4
+                    py-2.5
+                    rounded-lg
+                    text-sm
+                    lg:text-base
+                    font-bold
+                    transition-all
+                    duration-200
+                    ${
+                      active
+                        ? "text-white bg-[#171010]"
+                        : "text-gray-400 hover:text-white hover:bg-[#121212]"
+                    }
+                  `}
+                >
+                  <i
+                    className={`
+                      ${item.icon}
+                      text-[15px]
+                      ${
+                        active
+                          ? "text-red-500"
+                          : "text-gray-500"
+                      }
+                    `}
+                  />
+
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
 
           {/* RIGHT SIDE */}
-          <div className="ml-auto hidden md:flex items-center gap-2.5">
-            {/* SERVER STATUS */}
-            <div
+
+          <div className="hidden md:flex items-center gap-2 ml-auto">
+            {/* SERVER */}
+
+            <a
+              href="https://play.rearmc.club"
+              target="_blank"
+              rel="noopener noreferrer"
               className="
+                h-12
+                px-5
+                rounded-xl
+                border
+                border-[#292929]
+                bg-[#111111]
                 flex
                 items-center
                 gap-2.5
-                px-4
-                py-3
-                rounded-xl
-                border
-                border-[#302021]
-                bg-[#111112]
-                text-[#dedee1]
+                text-gray-200
                 font-bold
                 text-sm
-                whitespace-nowrap
+                hover:border-[#3b3b3b]
+                hover:bg-[#151515]
+                transition
               "
             >
               <span
@@ -132,218 +158,109 @@ export default function Navbar({ search = "", setSearch = () => {} }) {
               />
 
               play.rearmc.club
-            </div>
+            </a>
 
             {/* DISCORD */}
+
             <a
               href="https://discord.gg/EX7ZAaUyVt"
               target="_blank"
               rel="noopener noreferrer"
               className="
-                flex
-                items-center
-                gap-2
-                px-5
-                py-3
+                h-12
+                px-6
                 rounded-xl
                 bg-red-600
                 hover:bg-red-700
                 border
                 border-red-500
+                flex
+                items-center
+                justify-center
                 text-white
                 font-black
                 text-sm
                 transition-all
                 shadow-[0_0_20px_rgba(220,38,38,0.15)]
-                hover:shadow-[0_0_25px_rgba(220,38,38,0.3)]
               "
             >
-              <i className="fa-brands fa-discord text-[15px]" />
               Discord
             </a>
           </div>
 
-          {/* MOBILE MENU BUTTON */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="
-              md:hidden
-              ml-auto
-              w-10
-              h-10
-              rounded-xl
-              border
-              border-[#302021]
-              bg-[#111112]
-              text-gray-300
-              hover:text-white
-              hover:border-red-700
-              transition
-            "
-            aria-label="Toggle menu"
-          >
-            <i
-              className={
-                menuOpen
-                  ? "fa-solid fa-xmark"
-                  : "fa-solid fa-bars"
-              }
-            />
-          </button>
+          {/* MOBILE NAV */}
+
+          <div className="md:hidden ml-auto flex items-center gap-2">
+            <Link
+              href="/"
+              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+            >
+              <i className="fa-solid fa-house text-red-500" />
+            </Link>
+
+            <Link
+              href="/ranking"
+              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+            >
+              <i className="fa-solid fa-list text-red-500" />
+            </Link>
+
+            <Link
+              href="/hall-of-fame"
+              className="w-10 h-10 rounded-lg bg-[#151515] border border-[#292929] flex items-center justify-center"
+            >
+              <i className="fa-solid fa-crown text-red-500" />
+            </Link>
+          </div>
         </div>
 
-        {/* SEARCH ROW */}
-        <div
-          className="
-            border-t
-            border-[#211415]
-            px-4
-            sm:px-5
-            py-3
-            bg-[#0d0d0e]
-          "
-        >
-          <div className="flex justify-end">
+        {/* ================= SEARCH ROW ================= */}
+
+        <div className="px-5 sm:px-6 pb-5">
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                if (setSearch) {
+                  setSearch(e.target.value);
+                }
+              }}
+              placeholder="Search player"
+              className="
+                w-full
+                h-[52px]
+                rounded-xl
+                border
+                border-[#252525]
+                bg-[#101010]
+                px-5
+                pr-14
+                text-white
+                text-sm
+                outline-none
+                placeholder:text-gray-600
+                focus:border-red-800
+                focus:bg-[#111111]
+                transition
+              "
+            />
+
             <div
               className="
-                relative
-                w-full
-                md:w-[320px]
-                lg:w-[360px]
+                absolute
+                right-5
+                top-1/2
+                -translate-y-1/2
+                text-gray-500
+                pointer-events-none
               "
             >
-              <i
-                className="
-                  fa-solid
-                  fa-magnifying-glass
-                  absolute
-                  left-4
-                  top-1/2
-                  -translate-y-1/2
-                  text-[#555963]
-                  text-sm
-                  pointer-events-none
-                "
-              />
-
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search player"
-                className="
-                  w-full
-                  h-[44px]
-                  pl-11
-                  pr-4
-                  rounded-xl
-                  bg-[#111112]
-                  border
-                  border-[#29292c]
-                  text-white
-                  placeholder:text-[#555963]
-                  outline-none
-                  focus:border-red-700
-                  transition
-                  text-sm
-                "
-              />
+              <i className="fa-solid fa-magnifying-glass" />
             </div>
           </div>
         </div>
-
-        {/* MOBILE MENU */}
-        {menuOpen && (
-          <div
-            className="
-              md:hidden
-              border-t
-              border-[#211415]
-              bg-[#0d0d0e]
-              px-4
-              py-4
-              space-y-2
-            "
-          >
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="
-                  flex
-                  items-center
-                  gap-3
-                  px-4
-                  py-3
-                  rounded-xl
-                  text-gray-400
-                  hover:text-white
-                  hover:bg-[#151112]
-                  hover:border-red-900
-                  border
-                  border-transparent
-                  font-bold
-                  transition
-                "
-              >
-                <i
-                  className={`${item.icon} w-5 text-center text-red-500`}
-                />
-
-                {item.name}
-              </Link>
-            ))}
-
-            <div className="pt-2 flex gap-2">
-              <div
-                className="
-                  flex-1
-                  flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-3
-                  py-3
-                  rounded-xl
-                  border
-                  border-[#302021]
-                  bg-[#111112]
-                  text-gray-300
-                  text-xs
-                  font-bold
-                "
-              >
-                <span className="w-2 h-2 rounded-full bg-green-500" />
-                play.rearmc.club
-              </div>
-
-              <a
-                href="https://discord.gg/EX7ZAaUyVt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-4
-                  rounded-xl
-                  bg-red-600
-                  hover:bg-red-700
-                  text-white
-                  font-bold
-                  text-sm
-                "
-              >
-                <i className="fa-brands fa-discord" />
-                Discord
-              </a>
-            </div>
-          </div>
-        )}
-      </nav>
+      </div>
     </header>
   );
 }
