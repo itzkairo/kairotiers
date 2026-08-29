@@ -2,137 +2,125 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SearchBar from "./SearchBar";
 
-export default function Navbar({ search, setSearch }) {
+export default function Navbar({ search = "", setSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const navItems = [
-    {
-      href: "/",
-      icon: "/icons/home.svg",
-      label: "Home",
-    },
-    {
-      href: "/ranking",
-      icon: "/icons/ranking.svg",
-      label: "Ranking",
-    },
-    {
-      href: "/hall-of-fame",
-      icon: "/icons/fame.svg",
-      label: "Hall Of Fame",
-    },
-  ];
+  const serverIP = "play.rearmc.club";
+
+  const copyIP = async () => {
+    try {
+      await navigator.clipboard.writeText(serverIP);
+
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to copy IP:", error);
+    }
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   return (
-    <nav className="w-full pt-4 md:pt-6 px-3 sm:px-6 relative z-50">
-      <div
+    <header className="w-full px-3 sm:px-5 pt-4">
+      <nav
         className="
+          relative
           w-full
-          max-w-[1480px]
+          max-w-[1250px]
           mx-auto
-          h-[62px]
-          md:h-[66px]
           rounded-2xl
           border
-          border-[#3a3d43]
-          bg-[#080b10]/95
+          border-[#241719]
+          bg-[#0d0d0e]/95
           backdrop-blur-xl
-          shadow-[0_10px_35px_rgba(0,0,0,0.35)]
+          shadow-[0_10px_40px_rgba(0,0,0,0.35)]
         "
       >
-
-        {/* ================= DESKTOP ================= */}
-
-        <div className="hidden md:flex h-full items-center px-5 lg:px-7 relative">
-
+        <div
+          className="
+            h-[68px]
+            px-4
+            sm:px-5
+            md:px-6
+            flex
+            items-center
+            gap-4
+          "
+        >
           {/* LOGO */}
 
           <Link
             href="/"
-            className="
-              text-3xl
-              lg:text-4xl
-              font-black
-              tracking-tight
-              shrink-0
-            "
+            onClick={closeMenu}
+            className="shrink-0 flex items-center"
           >
-            <span className="text-red-600">Kairo</span>
-            <span className="text-white">Tiers</span>
+            <span className="text-xl sm:text-2xl font-black tracking-tight">
+              <span className="text-red-600">Kairo</span>
+              <span className="text-white">Tiers</span>
+            </span>
           </Link>
 
+          {/* DESKTOP NAV */}
 
-          {/* ================= CENTER NAV ================= */}
+          <div className="hidden md:flex items-center ml-6 gap-1">
+            <NavLink href="/" label="Home" />
 
-          <div
-            className="
-              absolute
-              left-1/2
-              top-1/2
-              -translate-x-1/2
-              -translate-y-1/2
-              flex
-              items-center
-              gap-2
-              lg:gap-3
-            "
-          >
+            <NavLink href="/ranking" label="Ranking" />
 
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
+            <NavLink
+              href="/hall-of-fame"
+              label="Hall Of Fame"
+            />
+          </div>
+
+          {/* RIGHT SIDE */}
+
+          <div className="hidden md:flex items-center gap-2 ml-auto">
+
+            {/* IP */}
+
+            <button
+              onClick={copyIP}
+              title="Copy Server IP"
+              className="
+                group
+                flex
+                items-center
+                gap-2
+                px-3.5
+                py-2.5
+                rounded-xl
+                bg-[#151112]
+                border
+                border-[#342022]
+                hover:border-red-700
+                hover:bg-[#1a0d0f]
+                transition-all
+                duration-200
+              "
+            >
+              <span
                 className="
-                  group
-                  flex
-                  items-center
-                  justify-center
-                  gap-3
-                  h-12
-                  lg:h-13
-                  px-6
-                  lg:px-7
-                  rounded-xl
-                  bg-transparent
-                  border
-                  border-transparent
-                  text-gray-300
-                  font-semibold
-                  text-base
-                  lg:text-lg
-                  whitespace-nowrap
-                  hover:bg-[#15191f]/80
-                  hover:text-white
-                  hover:border-transparent
-                  transition-all
-                  duration-200
+                  w-2
+                  h-2
+                  rounded-full
+                  bg-green-500
+                  shadow-[0_0_9px_rgba(34,197,94,0.8)]
+                  shrink-0
                 "
-              >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className="
-                    w-5
-                    h-5
-                    lg:w-[21px]
-                    lg:h-[21px]
-                    object-contain
-                    opacity-80
-                    group-hover:opacity-100
-                    group-hover:scale-110
-                    transition-all
-                    duration-200
-                  "
-                />
+              />
 
-                <span>
-                  {item.label}
-                </span>
-              </Link>
-            ))}
-
+              <span className="text-sm font-bold text-gray-300 group-hover:text-white transition">
+                {copied ? "Copied!" : serverIP}
+              </span>
+            </button>
 
             {/* DISCORD */}
 
@@ -141,112 +129,57 @@ export default function Navbar({ search, setSearch }) {
               target="_blank"
               rel="noopener noreferrer"
               className="
-                group
-                flex
-                items-center
-                justify-center
-                gap-3
-                h-12
-                lg:h-13
-                px-6
-                lg:px-7
+                px-4
+                py-2.5
                 rounded-xl
-                bg-transparent
+                bg-red-600
+                hover:bg-red-700
                 border
-                border-transparent
-                text-gray-300
-                font-semibold
-                text-base
-                lg:text-lg
-                whitespace-nowrap
-                hover:bg-[#15191f]/80
-                hover:text-white
-                hover:border-transparent
+                border-red-500
+                text-white
+                text-sm
+                font-bold
                 transition-all
                 duration-200
+                shadow-[0_0_20px_rgba(220,38,38,0.12)]
               "
             >
-              <img
-                src="/icons/discord.svg"
-                alt="Discord"
-                className="
-                  w-5
-                  h-5
-                  lg:w-[21px]
-                  lg:h-[21px]
-                  object-contain
-                  opacity-80
-                  group-hover:opacity-100
-                  group-hover:scale-110
-                  transition-all
-                  duration-200
-                "
-              />
-
-              <span>Discord</span>
+              Discord
             </a>
-
           </div>
 
-
-          {/* ================= SEARCH RIGHT ================= */}
-
-          <div className="ml-auto w-[220px] lg:w-[250px]">
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
-          </div>
-
-        </div>
-
-
-        {/* ================= MOBILE ================= */}
-
-        <div className="md:hidden h-full flex items-center justify-between px-4">
-
-          <Link
-            href="/"
-            className="text-2xl font-black tracking-tight"
-          >
-            <span className="text-red-600">Kairo</span>
-            <span className="text-white">Tiers</span>
-          </Link>
-
-
-          {/* HAMBURGER */}
+          {/* MOBILE MENU BUTTON */}
 
           <button
-            type="button"
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
             className="
+              md:hidden
+              ml-auto
               w-10
               h-10
               rounded-xl
-              bg-transparent
               border
-              border-transparent
+              border-[#302020]
+              bg-[#151112]
               flex
               flex-col
               items-center
               justify-center
               gap-1.5
-              hover:bg-[#15191f]/80
-              transition-all
+              hover:border-red-700
+              transition
             "
-            aria-label="Open navigation"
           >
-
             <span
               className={`
                 block
                 w-5
                 h-[2px]
-                bg-gray-300
-                rounded-full
+                bg-white
                 transition-all
                 duration-200
-                ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}
+                ${menuOpen ? "rotate-45 translate-y-[4px]" : ""}
               `}
             />
 
@@ -255,8 +188,7 @@ export default function Navbar({ search, setSearch }) {
                 block
                 w-5
                 h-[2px]
-                bg-gray-300
-                rounded-full
+                bg-white
                 transition-all
                 duration-200
                 ${menuOpen ? "opacity-0" : ""}
@@ -268,182 +200,237 @@ export default function Navbar({ search, setSearch }) {
                 block
                 w-5
                 h-[2px]
-                bg-gray-300
-                rounded-full
+                bg-white
                 transition-all
                 duration-200
-                ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}
+                ${menuOpen ? "-rotate-45 -translate-y-[4px]" : ""}
               `}
             />
-
           </button>
-
         </div>
 
-      </div>
+        {/* SEARCH BAR */}
 
+        {setSearch && (
+          <div className="hidden md:block px-5 pb-4">
+            <div className="relative">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search player..."
+                className="
+                  w-full
+                  h-11
+                  rounded-xl
+                  bg-[#111111]
+                  border
+                  border-[#292020]
+                  px-4
+                  pr-10
+                  text-sm
+                  text-white
+                  placeholder:text-gray-600
+                  outline-none
+                  focus:border-red-700
+                  transition
+                "
+              />
 
-      {/* ================= MOBILE MENU ================= */}
-
-      {menuOpen && (
-        <div
-          className="
-            md:hidden
-            w-full
-            max-w-[1480px]
-            mx-auto
-            mt-2
-            p-2
-            rounded-2xl
-            border
-            border-[#353941]
-            bg-[#080b10]/98
-            backdrop-blur-xl
-            shadow-[0_15px_40px_rgba(0,0,0,0.45)]
-          "
-        >
-
-          {/* HOME */}
-
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/home.svg"
-              alt="Home"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Home
-            </span>
-          </Link>
-
-
-          {/* RANKING */}
-
-          <Link
-            href="/ranking"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/ranking.svg"
-              alt="Ranking"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Ranking
-            </span>
-          </Link>
-
-
-          {/* HALL OF FAME */}
-
-          <Link
-            href="/hall-of-fame"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/fame.svg"
-              alt="Hall Of Fame"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Hall Of Fame
-            </span>
-          </Link>
-
-
-          {/* DISCORD */}
-
-          <a
-            href="https://discord.gg/EX7ZAaUyVt"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/discord.svg"
-              alt="Discord"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Discord
-            </span>
-          </a>
-
-
-          {/* SEARCH */}
-
-          <div className="mt-2">
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
+              <svg
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  w-4
+                  h-4
+                  text-gray-600
+                  pointer-events-none
+                "
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </div>
           </div>
+        )}
 
-        </div>
-      )}
+        {/* MOBILE MENU */}
 
-    </nav>
+        {menuOpen && (
+          <div
+            className="
+              md:hidden
+              border-t
+              border-[#241719]
+              px-4
+              py-4
+              space-y-2
+            "
+          >
+            <MobileNavLink
+              href="/"
+              label="Home"
+              onClick={closeMenu}
+            />
+
+            <MobileNavLink
+              href="/ranking"
+              label="Ranking"
+              onClick={closeMenu}
+            />
+
+            <MobileNavLink
+              href="/hall-of-fame"
+              label="Hall Of Fame"
+              onClick={closeMenu}
+            />
+
+            {/* MOBILE IP */}
+
+            <button
+              onClick={copyIP}
+              className="
+                w-full
+                flex
+                items-center
+                justify-center
+                gap-2
+                px-4
+                py-3
+                rounded-xl
+                bg-[#151112]
+                border
+                border-[#342022]
+                hover:border-red-700
+                transition
+              "
+            >
+              <span
+                className="
+                  w-2
+                  h-2
+                  rounded-full
+                  bg-green-500
+                  shadow-[0_0_9px_rgba(34,197,94,0.8)]
+                "
+              />
+
+              <span className="text-sm font-bold text-gray-300">
+                {copied ? "Copied!" : serverIP}
+              </span>
+            </button>
+
+            {/* MOBILE DISCORD */}
+
+            <a
+              href="https://discord.gg/EX7ZAaUyVt"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+              className="
+                block
+                w-full
+                text-center
+                px-4
+                py-3
+                rounded-xl
+                bg-red-600
+                hover:bg-red-700
+                text-white
+                font-bold
+                transition
+              "
+            >
+              Discord
+            </a>
+
+            {/* MOBILE SEARCH */}
+
+            {setSearch && (
+              <div className="relative pt-2">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search player..."
+                  className="
+                    w-full
+                    h-11
+                    rounded-xl
+                    bg-[#111111]
+                    border
+                    border-[#292020]
+                    px-4
+                    text-sm
+                    text-white
+                    placeholder:text-gray-600
+                    outline-none
+                    focus:border-red-700
+                  "
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </nav>
+    </header>
+  );
+}
+
+/* ================= DESKTOP NAV LINK ================= */
+
+function NavLink({ href, label }) {
+  return (
+    <Link
+      href={href}
+      className="
+        px-3.5
+        py-2.5
+        rounded-xl
+        text-sm
+        font-bold
+        text-gray-400
+        hover:text-white
+        hover:bg-[#171112]
+        transition-all
+        duration-200
+      "
+    >
+      {label}
+    </Link>
+  );
+}
+
+/* ================= MOBILE NAV LINK ================= */
+
+function MobileNavLink({ href, label, onClick }) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="
+        block
+        w-full
+        px-4
+        py-3
+        rounded-xl
+        text-gray-300
+        font-bold
+        bg-[#111111]
+        border
+        border-[#241719]
+        hover:border-red-700
+        hover:text-white
+        transition
+      "
+    >
+      {label}
+    </Link>
   );
 }
