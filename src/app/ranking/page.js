@@ -97,7 +97,7 @@ function RankingContent() {
 
           {/* ================= SERVER IP ================= */}
 
-          <div className="w-full flex justify-end mb-3 md:mb-4 px-1 sm:px-2">
+          <div className="w-full flex justify-end mb-0 px-1 sm:px-2">
             <div
               className="
                 inline-flex
@@ -152,16 +152,16 @@ function RankingContent() {
 
             {/* ================= GAMEMODE BAR ================= */}
 
-            <div
-              className="
-                w-full
-                px-0
-                sm:px-2
-                md:px-3
-                pb-5
-                sm:pb-6
-              "
-            >
+<div
+  className="
+    w-full
+    px-0
+    sm:px-2
+    md:px-3
+    pb-1
+    sm:pb-2
+  "
+>
               <div className="flex justify-center w-full">
 
                 <div className="w-full overflow-x-auto scrollbar-hide">
