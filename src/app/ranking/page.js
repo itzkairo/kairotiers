@@ -30,6 +30,8 @@ function RankingContent() {
     setSelectedPlayer(null);
   };
 
+  /* ================= URL GAMEMODE ================= */
+
   useEffect(() => {
     const modeFromUrl = searchParams.get("mode");
 
@@ -52,6 +54,8 @@ function RankingContent() {
     }
   }, [searchParams]);
 
+  /* ================= LOAD PLAYERS ================= */
+
   useEffect(() => {
     async function loadPlayers() {
       try {
@@ -65,6 +69,8 @@ function RankingContent() {
     loadPlayers();
   }, []);
 
+  /* ================= SORT PLAYERS ================= */
+
   const sortedPlayers = [...players]
     .filter((p) => p?.[selectedMode])
     .sort(
@@ -72,6 +78,8 @@ function RankingContent() {
         (b[selectedMode]?.points || 0) -
         (a[selectedMode]?.points || 0)
     );
+
+  /* ================= SEARCH ================= */
 
   const filteredPlayers = sortedPlayers.filter(
     (player) =>
@@ -97,7 +105,8 @@ function RankingContent() {
 
           {/* ================= SERVER IP ================= */}
 
-          <div className="w-full flex justify-end mb-0 px-1 sm:px-2">
+          <div className="w-full flex justify-end mb-3 md:mb-4 px-1 sm:px-2">
+
             <div
               className="
                 inline-flex
@@ -114,7 +123,7 @@ function RankingContent() {
                 shadow-[0_5px_20px_rgba(0,0,0,0.35)]
               "
             >
-              {/* ONLINE DOT */}
+
               <span
                 className="
                   w-2.5
@@ -126,7 +135,6 @@ function RankingContent() {
                 "
               />
 
-              {/* IP */}
               <span
                 className="
                   text-sm
@@ -138,10 +146,12 @@ function RankingContent() {
               >
                 IP: play.rearmc.club
               </span>
+
             </div>
+
           </div>
 
-          {/* ================= MAIN RANKING CONTAINER ================= */}
+          {/* ================= MAIN RANKING ================= */}
 
           <motion.section
             initial={{ opacity: 0, y: 20 }}
@@ -152,16 +162,17 @@ function RankingContent() {
 
             {/* ================= GAMEMODE BAR ================= */}
 
-<div
-  className="
-    w-full
-    px-0
-    sm:px-2
-    md:px-3
-    pb-1
-    sm:pb-2
-  "
->
+            <div
+              className="
+                w-full
+                px-0
+                sm:px-2
+                md:px-3
+                pb-5
+                sm:pb-6
+              "
+            >
+
               <div className="flex justify-center w-full">
 
                 <div className="w-full overflow-x-auto scrollbar-hide">
@@ -178,6 +189,7 @@ function RankingContent() {
                 </div>
 
               </div>
+
             </div>
 
             {/* ================= RANKING BACKGROUND ================= */}
@@ -212,13 +224,13 @@ function RankingContent() {
                 "
               />
 
-              {/* TABLE HEADER */}
+              {/* ================= TABLE HEADER ================= */}
 
               <div
                 className="
                   hidden
                   md:grid
-                  grid-cols-[80px_minmax(250px,1fr)_120px_330px]
+                  grid-cols-[80px_minmax(300px,1fr)_150px_330px]
                   items-center
                   gap-4
                   px-6
@@ -233,17 +245,38 @@ function RankingContent() {
                   tracking-[0.15em]
                 "
               >
-                <div>#</div>
-                <div>Player</div>
-                <div>Region</div>
-                <div className="text-right">Tiers</div>
+
+                {/* # */}
+
+                <div className="text-left">
+                  #
+                </div>
+
+                {/* PLAYER */}
+
+                <div className="text-left">
+                  PLAYER
+                </div>
+
+                {/* REGION */}
+
+                <div className="text-center">
+                  REGION
+                </div>
+
+                {/* TIERS */}
+
+                <div className="text-right">
+                  TIERS
+                </div>
+
               </div>
 
-              {/* CONTENT */}
+              {/* ================= CONTENT ================= */}
 
               <AnimatePresence mode="wait">
 
-                {/* OVERALL */}
+                {/* ================= OVERALL ================= */}
 
                 {selectedMode === "overall" ? (
 
@@ -352,7 +385,7 @@ function RankingContent() {
 
                 ) : (
 
-                  /* INDIVIDUAL GAMEMODE */
+                  /* ================= INDIVIDUAL GAMEMODE ================= */
 
                   <motion.div
                     key={selectedMode}
