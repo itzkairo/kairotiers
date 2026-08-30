@@ -19,6 +19,7 @@ function RankingContent() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [players, setPlayers] = useState([]);
+  const [ipCopied, setIpCopied] = useState(false);
 
   const openPlayer = (player) => {
     setSelectedPlayer(player);
@@ -87,6 +88,22 @@ function RankingContent() {
       player.ign.toLowerCase().includes(search.toLowerCase())
   );
 
+  /* ================= COPY IP ================= */
+
+  const copyIP = async () => {
+    try {
+      await navigator.clipboard.writeText("play.rearmc.club");
+
+      setIpCopied(true);
+
+      setTimeout(() => {
+        setIpCopied(false);
+      }, 1500);
+    } catch (error) {
+      console.error("Failed to copy IP:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
 
@@ -103,49 +120,131 @@ function RankingContent() {
 
         <div className="w-full max-w-[1270px] mx-auto">
 
-          {/* ================= SERVER IP ================= */}
+          {/* ================= SERVER IP + STORE ================= */}
 
-          <div className="w-full flex justify-end mb-3 md:mb-4 px-1 sm:px-2">
+          <div className="w-full flex justify-end pt-2 mb-0 px-1 sm:px-4">
 
-            <div
-              className="
-                inline-flex
-                items-center
-                gap-2
-                h-10
-                md:h-11
-                px-4
-                md:px-5
-                rounded-xl
-                border
-                border-[#25282d]
-                bg-[#090b0e]
-                shadow-[0_5px_20px_rgba(0,0,0,0.35)]
-              "
-            >
+            <div className="flex items-center gap-2">
 
-              <span
+              {/* ================= STORE BUTTON ================= */}
+
+              <a
+                href="https://rearmc.club/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="
-                  w-2.5
-                  h-2.5
-                  rounded-full
-                  bg-green-500
-                  shadow-[0_0_10px_rgba(34,197,94,0.8)]
-                  shrink-0
-                "
-              />
-
-              <span
-                className="
+                  group
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-2
+                  h-10
+                  md:h-11
+                  px-4
+                  md:px-5
+                  rounded-xl
+                  border
+                  border-[#25282d]
+                  bg-[#090b0e]
+                  text-white
+                  font-bold
                   text-sm
                   md:text-base
-                  font-bold
-                  text-gray-200
-                  whitespace-nowrap
+                  shadow-[0_5px_20px_rgba(0,0,0,0.35)]
+                  hover:bg-[#12090b]
+                  hover:border-[#7f252d]
+                  hover:shadow-[0_8px_30px_rgba(180,30,45,0.35)]
+                  hover:-translate-y-[1px]
+                  active:translate-y-0
+                  active:scale-[0.97]
+                  transition-all
+                  duration-200
                 "
               >
-                IP: play.rearmc.club
-              </span>
+
+                <img
+                  src="/icons/store.svg"
+                  alt="Store"
+                  className="
+                    w-4
+                    h-4
+                    md:w-[18px]
+                    md:h-[18px]
+                    object-contain
+                    transition-all
+                    duration-200
+                    group-hover:scale-110
+                    group-hover:rotate-[-4deg]
+                  "
+                />
+
+                <span>
+                  Store
+                </span>
+
+              </a>
+
+              {/* ================= IP BUTTON ================= */}
+
+              <button
+                type="button"
+                onClick={copyIP}
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-2
+                  h-10
+                  md:h-11
+                  px-4
+                  md:px-5
+                  rounded-xl
+                  border
+                  border-[#25282d]
+                  bg-[#090b0e]
+                  shadow-[0_5px_20px_rgba(0,0,0,0.35)]
+                  cursor-pointer
+                  hover:border-[#5c2025]
+                  hover:bg-[#10090b]
+                  hover:shadow-[0_8px_25px_rgba(180,30,45,0.25)]
+                  hover:-translate-y-[1px]
+                  active:translate-y-0
+                  active:scale-[0.98]
+                  transition-all
+                  duration-200
+                "
+              >
+
+                {/* ONLINE DOT */}
+
+                <span
+                  className="
+                    w-2.5
+                    h-2.5
+                    rounded-full
+                    bg-green-500
+                    shadow-[0_0_10px_rgba(34,197,94,0.8)]
+                    shrink-0
+                  "
+                />
+
+                {/* IP */}
+
+                <span
+                  className="
+                    text-sm
+                    md:text-base
+                    font-bold
+                    text-gray-200
+                    whitespace-nowrap
+                  "
+                >
+                  {ipCopied
+                    ? "Copied!"
+                    : "IP: play.rearmc.club"}
+                </span>
+
+              </button>
 
             </div>
 
@@ -168,8 +267,8 @@ function RankingContent() {
                 px-0
                 sm:px-2
                 md:px-3
-                pb-5
-                sm:pb-6
+                pb-1
+                sm:pb-1
               "
             >
 
@@ -209,7 +308,7 @@ function RankingContent() {
               "
             >
 
-              {/* RED TOP LINE */}
+              {/* ================= RED TOP LINE ================= */}
 
               <div
                 className="
@@ -246,25 +345,13 @@ function RankingContent() {
                 "
               >
 
-                {/* # */}
-
                 <div className="text-left">
                   #
                 </div>
 
-                {/* PLAYER */}
-
                 <div className="text-left">
                   PLAYER
                 </div>
-
-                {/* REGION */}
-
-                <div className="text-center">
-                  REGION
-                </div>
-
-                {/* TIERS */}
 
                 <div className="text-right">
                   TIERS
