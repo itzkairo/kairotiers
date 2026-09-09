@@ -23,13 +23,17 @@ export async function POST(request) {
     const { ign, tier, gamemode } = body;
 
     if (!ign || !tier || !gamemode) {
+      console.log("❌ MISSING DATA");
+
       return NextResponse.json(
         { error: "Missing ign, tier or gamemode" },
         { status: 400 }
       );
     }
 
-    // Convert bot gamemode name to actual database column
+    const cleanIgn = String(ign).trim();
+    const mode = String(gamemode).toLowerCase();
+
     const gamemodeMap = {
       sword: "sword",
       axe: "axe",
@@ -41,52 +45,99 @@ export async function POST(request) {
       uhc: "uhc"
     };
 
-    const mode = gamemodeMap[String(gamemode).toLowerCase()];
+    const mappedMode = gamemodeMap[mode];
 
-    if (!mode) {
+    if (!mappedMode) {
+      console.log("❌ INVALID GAMEMODE:", mode);
+
       return NextResponse.json(
         { error: `Invalid gamemode: ${gamemode}` },
         { status: 400 }
       );
     }
 
-    const tierColumn = `${mode}_tier`;
+    const tierColumn = `${mappedMode}_tier`;
 
-    console.log("IGN:", ign);
-    console.log("GAMEMODE:", mode);
+    console.log("IGN:", cleanIgn);
+    console.log("GAMEMODE:", mappedMode);
     console.log("TIER COLUMN:", tierColumn);
     console.log("TIER:", tier);
 
-    // Check player
-    const { data: player, error: playerError } = await supabase
+    // ==========================================
+    // CHECK IF PLAYER EXISTS
+    // ==========================================
+
+    const { data: existingPlayer, error: findError } = await supabase
       .from("players")
       .select("id, ign")
-      .eq("ign", ign)
+      .ilike("ign", cleanIgn)
       .maybeSingle();
 
-    if (playerError) {
-      console.error("❌ PLAYER FETCH ERROR:", playerError);
+    if (findError) {
+      console.error("❌ PLAYER CHECK ERROR:", findError);
 
       return NextResponse.json(
-        { error: playerError.message },
+        { error: findError.message },
         { status: 500 }
       );
     }
 
-    if (!player) {
-      return NextResponse.json(
-        { error: "Player not found" },
-        { status: 404 }
-      );
+    // ==========================================
+    // PLAYER DOES NOT EXIST
+    // CREATE PLAYER + TIER
+    // ==========================================
+
+    if (!existingPlayer) {
+      console.log("🆕 PLAYER DOES NOT EXIST");
+      console.log("🆕 CREATING:", cleanIgn);
+
+      const { data: newPlayer, error: createError } = await supabase
+        .from("players")
+        .insert({
+          ign: cleanIgn,
+          [tierColumn]: tier
+        })
+        .select()
+        .single();
+
+      if (createError) {
+        console.error("❌ CREATE PLAYER ERROR:", createError);
+
+        return NextResponse.json(
+          {
+            error: createError.message,
+            details: createError.details,
+            hint: createError.hint
+          },
+          { status: 500 }
+        );
+      }
+
+      console.log("✅ PLAYER CREATED:", newPlayer);
+
+      return NextResponse.json({
+        success: true,
+        created: true,
+        ign: cleanIgn,
+        tier,
+        gamemode: mappedMode
+      });
     }
 
-    // Update correct tier column
+    // ==========================================
+    // PLAYER EXISTS
+    // ONLY UPDATE TIER
+    // ==========================================
+
+    console.log("👤 PLAYER EXISTS:", existingPlayer.ign);
+    console.log("🔄 UPDATING:", tierColumn, "=", tier);
+
     const { data: updatedPlayer, error: updateError } = await supabase
       .from("players")
       .update({
         [tierColumn]: tier
       })
-      .eq("ign", ign)
+      .eq("id", existingPlayer.id)
       .select()
       .single();
 
@@ -103,10 +154,10 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
-      ign,
-      gamemode: mode,
+      created: false,
+      ign: updatedPlayer.ign,
       tier,
-      column: tierColumn
+      gamemode: mappedMode
     });
 
   } catch (error) {
