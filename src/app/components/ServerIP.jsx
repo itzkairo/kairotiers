@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function ServerIP() {
   const [copied, setCopied] = useState(false);
 
-  const ip = "play.rearmc.club";
+  const ip = "play.wolfmc.fun";
 
   const copyIP = async () => {
     try {

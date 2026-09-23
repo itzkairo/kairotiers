@@ -92,7 +92,7 @@ function RankingContent() {
 
   const copyIP = async () => {
     try {
-      await navigator.clipboard.writeText("play.rearmc.club");
+      await navigator.clipboard.writeText("play.wolfmc.fun");
 
       setIpCopied(true);
 
@@ -125,64 +125,6 @@ function RankingContent() {
           <div className="w-full flex justify-end pt-2 mb-0 px-1 sm:px-4">
 
             <div className="flex items-center gap-2">
-
-              {/* ================= STORE BUTTON ================= */}
-
-              <a
-                href="https://rearmc.club/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  h-10
-                  md:h-11
-                  px-4
-                  md:px-5
-                  rounded-xl
-                  border
-                  border-[#25282d]
-                  bg-[#090b0e]
-                  text-white
-                  font-bold
-                  text-sm
-                  md:text-base
-                  shadow-[0_5px_20px_rgba(0,0,0,0.35)]
-                  hover:bg-[#12090b]
-                  hover:border-[#7f252d]
-                  hover:shadow-[0_8px_30px_rgba(180,30,45,0.35)]
-                  hover:-translate-y-[1px]
-                  active:translate-y-0
-                  active:scale-[0.97]
-                  transition-all
-                  duration-200
-                "
-              >
-
-                <img
-                  src="/icons/store.svg"
-                  alt="Store"
-                  className="
-                    w-4
-                    h-4
-                    md:w-[18px]
-                    md:h-[18px]
-                    object-contain
-                    transition-all
-                    duration-200
-                    group-hover:scale-110
-                    group-hover:rotate-[-4deg]
-                  "
-                />
-
-                <span>
-                  Store
-                </span>
-
-              </a>
 
               {/* ================= IP BUTTON ================= */}
 
@@ -241,7 +183,7 @@ function RankingContent() {
                 >
                   {ipCopied
                     ? "Copied!"
-                    : "IP: play.rearmc.club"}
+                    : "IP: play.wolfmc.fun"}
                 </span>
 
               </button>
