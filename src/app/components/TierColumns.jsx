@@ -1,119 +1,125 @@
 "use client";
 
+import { getTierText, tierColumnStyles } from "./tierStyles";
 
-export default function TierColumns({
-  players = [],
-  mode,
-  onPlayerClick,
-}) {
-
+export default function TierColumns({ players = [], mode, onPlayerClick }) {
   const tiers = [1, 2, 3, 4, 5].map((number) => ({
+    number,
     title: `Tier ${number}`,
-    color:
-      number === 1
-        ? "border-yellow-500"
-        : number === 2
-        ? "border-gray-400"
-        : number === 3
-        ? "border-orange-500"
-        : number === 4
-        ? "border-red-600"
-        : "border-[#333]",
-
     players: players.filter(
       (player) =>
         player[mode]?.tier &&
         player[mode].tier.endsWith(number.toString())
     ),
   }));
+
   return (
-    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
+    <div className="no-scrollbar md:overflow-x-auto">
+      <div className="grid grid-cols-1 gap-3 md:min-w-[980px] md:grid-cols-5 md:pb-1">
+        {tiers.map((tier) => {
+          const style = tierColumnStyles[tier.number];
 
-      {tiers.map((tier) => (
+          return (
+            <section
+              key={tier.title}
+              style={{ animationDelay: `${tier.number * 30}ms` }}
+              className="animate-rise min-w-0 self-start overflow-hidden rounded-[12px] border border-line bg-surface"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-line-soft bg-[#080808] px-3.5 py-3">
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${style.bar}`} />
 
-        <div
-          key={tier.title}
-          className={`bg-[#151515] border ${tier.color} rounded-2xl overflow-hidden shadow-lg`}
-        >
+                  <span className="text-[13px] font-semibold text-[#D4D4D8]">
+                    Tier {tier.number}
+                  </span>
+                </div>
 
-          {/* Header */}
-
-          <div className="bg-[#1E1E1E] py-4 text-center border-b border-[#2A2A2A]">
-
-            <h2 className="text-xl font-black">
-              {tier.title}
-            </h2>
-
-          </div>
-
-          {/* Players */}
-
-          <div className="p-4 min-h-[500px]">
-
-            {tier.players.length === 0 ? (
-
-              <div className="h-full flex flex-col justify-center items-center text-center text-gray-500">
-
-<img
-  src={`/icons/${mode}.svg`}
-  alt={mode}
-  className="w-16 h-16 mx-auto mb-4"
-/>
-
-                <p className="font-semibold">
-                  No Players Yet
-                </p>
-
+                <span className="text-[12px] font-medium tabular-nums text-[#6F6F78]">
+                  {tier.players.length}
+                </span>
               </div>
 
-            ) : (
+              <div className="p-1.5">
+                {tier.players.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-2.5 py-9 text-center">
+                    <img
+                      src={`/icons/${mode}.svg`}
+                      alt=""
+                      className="h-7 w-7 object-contain opacity-30"
+                    />
 
-              <div className="space-y-3">
-
-                {tier.players.map((player) => (
-
-<div
-  key={player.ign}
-  onClick={() => onPlayerClick(player)}
-  className="bg-[#101010] border border-[#2A2A2A] rounded-xl p-3 hover:border-red-600 transition cursor-pointer"
->
-
-                    <div className="flex items-center gap-3">
-
-                      <img
-                        src={`https://mc-heads.net/avatar/${player.ign}/32`}
-                        alt={player.ign}
-                        className="w-10 h-10 rounded"
-                      />
-
-                      <div>
-
-                        <div className="font-bold">
-                          {player.ign}
-                        </div>
-
-                        <div className="text-red-500 text-sm">
-                          {player[mode].tier}
-                        </div>
-
-                      </div>
-
-                    </div>
-
+                    <p className="text-[12px] text-[#5F5F68]">No players</p>
                   </div>
+                ) : (
+                  <div>
+                    {tier.players.map((player) => (
+                      <button
+                        key={player.ign}
+                        type="button"
+                        onClick={() => onPlayerClick(player)}
+                        className="
+                          flex
+                          w-full
+                          items-center
+                          gap-3
+                          rounded-[8px]
+                          px-2.5
+                          py-2.5
+                          text-left
+                          transition-colors
+                          duration-200
+                          hover:bg-[#101010]
+                        "
+                      >
+                        <img
+                          src={`https://mc-heads.net/avatar/${player.ign}/32`}
+                          alt={player.ign}
+                          className="
+                            h-9
+                            w-9
+                            shrink-0
+                            rounded-[7px]
+                            border
+                            border-line
+                            bg-[#0A0A0A]
+                            object-cover
+                          "
+                          onError={(event) => {
+                            event.currentTarget.src =
+                              "https://mc-heads.net/avatar/Steve/32";
+                          }}
+                        />
 
-                ))}
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[14px] font-medium text-[#D4D4D8]">
+                            {player.ign}
+                          </span>
 
+                          <span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[11px]">
+                            <span
+                              className={`shrink-0 font-semibold ${getTierText(
+                                player[mode].tier
+                              )}`}
+                            >
+                              {player[mode].tier}
+                            </span>
+
+                            <span className="text-[#3A3A42]">·</span>
+
+                            <span className="truncate tabular-nums text-[#6F6F78]">
+                              {player[mode]?.points || 0} pts
+                            </span>
+                          </span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-
-            )}
-
-          </div>
-
-        </div>
-
-      ))}
-
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }

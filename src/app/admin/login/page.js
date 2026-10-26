@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { LogoMark } from "../../components/CodeIcons";
+
 export default function AdminLogin() {
   const router = useRouter();
 
@@ -50,67 +52,78 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#0B0B0B] px-4">
-      <div className="w-full max-w-md bg-[#151515] border border-[#2A2A2A] rounded-2xl p-8 shadow-[0_0_50px_rgba(0,0,0,0.4)]">
+    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-white">
+      <div className="w-full max-w-[380px]">
+        <div className="mb-7 flex items-center justify-center gap-2.5">
+          <LogoMark className="h-8 w-8" />
 
-        <h1 className="text-4xl font-black text-center mb-2">
-          <span className="text-red-600">Admin</span>{" "}
-          <span className="text-white">Login</span>
-        </h1>
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-white">
+            Kairo<span className="text-[#E05252]">Tiers</span>
+          </span>
+        </div>
 
-        <p className="text-center text-gray-500 mb-8">
-          Enter your administrator password
-        </p>
+        <div className="rounded-[16px] border border-line bg-surface p-6 sm:p-7">
+          <h1 className="text-[26px] font-bold tracking-[-0.035em] text-white">
+            Admin login
+          </h1>
 
-        <form onSubmit={handleLogin}>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-[#8B8B94]">
+            Enter your administrator password to continue.
+          </p>
 
-          <input
-            type="password"
-            placeholder="Admin Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="
-              w-full
-              p-4
-              rounded-xl
-              bg-[#101010]
-              border
-              border-[#333]
-              text-white
-              outline-none
-              focus:border-red-600
-              transition
-            "
-          />
+          <form onSubmit={handleLogin} className="mt-6">
+            <label
+              htmlFor="admin-password"
+              className="text-[12px] font-medium text-[#A1A1AA]"
+            >
+              Password
+            </label>
 
-          {error && (
-            <p className="text-red-500 text-sm mt-3">
-              {error}
-            </p>
-          )}
+            <input
+              id="admin-password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Admin password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="field mt-2 h-11 px-3.5"
+            />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="
-              mt-6
-              w-full
-              bg-red-600
-              hover:bg-red-700
-              disabled:opacity-50
-              disabled:cursor-not-allowed
-              transition
-              rounded-xl
-              py-4
-              font-bold
-              text-lg
-            "
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
+            {error && (
+              <div className="mt-3 rounded-[8px] border border-line-red bg-[#120909] px-3 py-2.5">
+                <p className="text-[12px] text-[#F87171]">{error}</p>
+              </div>
+            )}
 
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className="
+                mt-4
+                h-11
+                w-full
+                rounded-[9px]
+                bg-[#DC2626]
+                text-[14px]
+                font-semibold
+                text-white
+                transition-colors
+                duration-200
+                hover:bg-[#B91C1C]
+                disabled:cursor-not-allowed
+                disabled:opacity-50
+              "
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
 
+          <div className="mt-6 flex items-center justify-center border-t border-line-soft pt-4">
+            <span className="text-[12px] text-[#4A4A52]">
+              KairoTiers administration
+            </span>
+          </div>
+        </div>
       </div>
     </main>
   );

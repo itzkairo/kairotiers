@@ -1,233 +1,217 @@
 @import "tailwindcss";
 
+/* ========================= */
+/* KAIROTIERS DESIGN TOKENS  */
+/* Dark, competitive, clean  */
+/* ========================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
+  --surface: #0a0a0a;
+  --surface-elevated: #101010;
+  --surface-hover: #151111;
+  --border: #252525;
+  --border-soft: #1a1a1a;
+  --border-red: #3a2020;
+  --accent: #dc2626;
+  --muted: #a1a1aa;
+  --muted-dim: #6f6f78;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-hover: var(--surface-hover);
+  --color-line: var(--border);
+  --color-line-soft: var(--border-soft);
+  --color-line-red: var(--border-red);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-muted-dim: var(--muted-dim);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-body{
-  background:#0B0B0B;
-}
-
-*{
-  scroll-behavior:smooth;
-}
 /* ========================= */
-/* KAIROTIERS CUSTOM CLASSES */
+/* BASE                      */
 /* ========================= */
 
-.glass-nav {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.25);
+* {
+  box-sizing: border-box;
 }
 
-.card-glow {
-  background: linear-gradient(to right, #141414, #1a1a1a);
-  border: 1px solid #2a2a2a;
-  transition: all 0.3s ease;
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-.card-glow:hover {
-  border-color: #dc2626;
-  transform: translateY(-4px);
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.18);
-}
-
-.red-glow {
-  text-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
-}
-
-.white-glow {
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
-}
-
-.tier-badge {
-  background: #dc2626;
-  color: white;
-  border-radius: 10px;
-  padding: 6px 14px;
-  font-weight: 700;
-  box-shadow: 0 0 18px rgba(255, 0, 0, 0.4);
-}
-
-.input-glow {
-  transition: 0.3s;
-}
-
-.input-glow:focus {
-  border-color: #dc2626;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #dc2626;
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-track {
-  background: #111;
-}
-/* Background Glow */
-
+html,
 body {
-  background: #090909;
   overflow-x: hidden;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-
-  top: -250px;
-  left: -250px;
-
-  width: 700px;
-  height: 700px;
-
-  background: radial-gradient(circle,
-      rgba(255, 0, 0, .12),
-      transparent 70%);
-
-  filter: blur(60px);
-
-  animation: glowMove 12s infinite alternate ease-in-out;
-
-  pointer-events: none;
-}
-
-body::after {
-
-  content: "";
-
-  position: fixed;
-
-  right: -250px;
-
-  bottom: -250px;
-
-  width: 700px;
-
-  height: 700px;
-
-  background: radial-gradient(circle,
-      rgba(255, 0, 0, .08),
-      transparent 70%);
-
-  filter: blur(70px);
-
-  animation: glowMove2 15s infinite alternate ease-in-out;
-
-  pointer-events: none;
-}
-/* ================= GRID OVERLAY ================= */
-
-body::selection {
-  background: #dc2626;
-  color: white;
-}
-
-body::before,
-body::after {
-  pointer-events: none;
-}
-/* ================= GRID OVERLAY ================= */
-
-body::selection {
-  background: #dc2626;
-  color: white;
-}
-
-body::before,
-body::after {
-  pointer-events: none;
-}
-
-.grid-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-
-  background-size: 40px 40px;
-
-  mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
-
-  opacity: 0.35;
-}
-
-.grid-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-
-  background-size: 40px 40px;
-
-  mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
-
-  opacity: 0.35;
-}
-
-@keyframes glowMove {
-
-  from {
-    transform: translate(0,0);
-  }
-
-  to {
-    transform: translate(150px,80px);
-  }
-
-}
-
-@keyframes glowMove2 {
-
-  from {
-    transform: translate(0,0);
-  }
-
-  to {
-    transform: translate(-150px,-100px);
-  }
-
-}
-html,
 body {
-  overflow-x: hidden !important;
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
-html,
-body {
-  overflow-y: scroll;
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* The decorative overlay element stays in the layout tree but is disabled:
+   every surface in this design is solid. */
+.grid-overlay {
+  display: none;
+}
+
+/* ========================= */
+/* SCROLLBAR                 */
+/* ========================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070707;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border: 2px solid #070707;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-red);
+}
+
+/* ========================= */
+/* TYPOGRAPHIC UTILITIES     */
+/* ========================= */
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+/* Legacy alias: resolves to the sans-serif label style so no view can
+   accidentally fall back to a terminal-style micro label. */
+.mono-label {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+/* Numbers align cleanly without introducing a second typeface. */
+.mono-value {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Monospace is reserved for genuinely technical strings such as the IP. */
+.code {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========================= */
+/* FORM FIELDS               */
+/* ========================= */
+
+.field {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.field::placeholder {
+  color: var(--muted-dim);
+}
+
+.field:hover {
+  border-color: #333333;
+}
+
+.field:focus {
+  border-color: var(--accent);
+  background: var(--surface-elevated);
+}
+
+/* ========================= */
+/* MOTION                    */
+/* ========================= */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* ========================= */
+/* ACCESSIBILITY             */
+/* ========================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

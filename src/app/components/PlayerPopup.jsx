@@ -2,12 +2,21 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function PlayerPopup({
-  player,
-  mode,
-  isOpen,
-  onClose,
-}) {
+import { CloseIcon } from "./CodeIcons";
+import { getTierText } from "./tierStyles";
+
+const modeIcons = {
+  sword: "/icons/sword.svg",
+  axe: "/icons/axe.svg",
+  mace: "/icons/mace.svg",
+  diapot: "/icons/diapot.svg",
+  nethpot: "/icons/nethpot.svg",
+  smp: "/icons/smp.svg",
+  uhc: "/icons/uhc.svg",
+  crystal: "/icons/crystal.svg",
+};
+
+export default function PlayerPopup({ player, mode, isOpen, onClose }) {
   if (!player) return null;
 
   return (
@@ -21,8 +30,7 @@ export default function PlayerPopup({
             flex
             items-center
             justify-center
-            bg-black/80
-            backdrop-blur-md
+            bg-black/75
             p-3
             sm:p-4
           "
@@ -32,235 +40,124 @@ export default function PlayerPopup({
           onClick={onClose}
         >
           <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.94,
-              y: 15,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.94,
-              y: 15,
-            }}
-            transition={{
-              duration: 0.22,
-              ease: "easeOut",
-            }}
-            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${player.ign} player profile`}
+            initial={{ opacity: 0, scale: 0.97, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97, y: 10 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            onClick={(event) => event.stopPropagation()}
             className="
               relative
+              max-h-[calc(100dvh-1.5rem)]
               w-full
-              max-w-[470px]
-              rounded-[28px]
+              max-w-[480px]
+              overflow-y-auto
+              rounded-[16px]
               border
-              border-[#303034]
-              bg-[#0d0d0f]
-              shadow-[0_0_80px_rgba(220,38,38,0.14)]
-              overflow-hidden
+              border-line
+              bg-surface
+              shadow-[0_18px_50px_rgba(0,0,0,0.55)]
             "
           >
-
-            {/* ================= TOP GLOW ================= */}
-
-            <div
-              className="
-                absolute
-                top-0
-                left-1/2
-                -translate-x-1/2
-                w-[280px]
-                h-[150px]
-                rounded-full
-                bg-red-600/10
-                blur-[75px]
-                pointer-events-none
-              "
-            />
-
-            {/* ================= CLOSE ================= */}
-
-            <button
-              onClick={onClose}
-              className="
-                absolute
-                top-4
-                right-4
-                z-30
-                w-9
-                h-9
-                rounded-full
-                flex
-                items-center
-                justify-center
-                bg-[#19191c]
-                border
-                border-[#333338]
-                text-gray-300
-                text-lg
-                hover:text-white
-                hover:bg-red-600
-                hover:border-red-500
-                transition-all
-                duration-200
-              "
-            >
-              ×
-            </button>
-
             {/* ================= HEADER ================= */}
 
-            <div className="relative pt-7">
+            <div className="flex items-center gap-4 border-b border-line-soft px-5 py-5 sm:px-6">
+              <img
+                src={`https://mc-heads.net/avatar/${player.ign}/128`}
+                alt={player.ign}
+                onError={(event) => {
+                  event.currentTarget.src =
+                    "https://mc-heads.net/avatar/Steve/128";
+                }}
+                className="
+                  h-16
+                  w-16
+                  shrink-0
+                  rounded-[10px]
+                  border
+                  border-[#2A2A2A]
+                  bg-[#0A0A0A]
+                  object-cover
+                "
+              />
 
-              <div className="flex justify-center">
-
-                <div
-                  className="
-                    relative
-                    p-[3px]
-                    rounded-[21px]
-                    bg-gradient-to-br
-                    from-red-500
-                    via-red-700
-                    to-[#350909]
-                    shadow-[0_0_30px_rgba(220,38,38,0.25)]
-                  "
-                >
-
-                  <img
-                    src={`https://mc-heads.net/avatar/${player.ign}/128`}
-                    alt={player.ign}
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        "https://mc-heads.net/avatar/Steve/128";
-                    }}
-                    className="
-                      w-24
-                      h-24
-                      sm:w-28
-                      sm:h-28
-                      rounded-[18px]
-                      bg-[#111113]
-                      object-cover
-                    "
-                  />
-
-                </div>
-
-              </div>
-
-              {/* PLAYER NAME */}
-
-              <div className="text-center mt-3 px-6">
-
-                <h1
-                  className="
-                    text-2xl
-                    sm:text-3xl
-                    font-black
-                    tracking-tight
-                    text-white
-                  "
-                >
-                  {player.ign}
-                </h1>
-
-                <p className="mt-1 text-sm text-gray-300 font-medium">
-                  KairoTiers Ranked Player
+              <div className="min-w-0 flex-1">
+                <p className="text-[12px] font-medium text-[#6F6F78]">
+                  Player profile
                 </p>
 
+                <h1 className="mt-1 truncate text-[24px] font-bold tracking-[-0.035em] text-white">
+                  {player.ign}
+                </h1>
               </div>
 
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close player details"
+                className="
+                  flex
+                  h-9
+                  w-9
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-[9px]
+                  text-[#8B8B94]
+                  transition-colors
+                  duration-200
+                  hover:bg-surface-hover
+                  hover:text-white
+                "
+              >
+                <CloseIcon className="h-[18px] w-[18px]" />
+              </button>
             </div>
 
             {/* ================= BODY ================= */}
 
-            <div className="px-4 sm:px-6 pb-5 pt-5">
-
-              {/* ================= OVERALL ================= */}
-
+            <div className="px-5 py-5 sm:px-6">
               {mode === "overall" ? (
                 <>
-                  <div
-                    className="
-                      relative
-                      overflow-hidden
-                      rounded-2xl
-                      border
-                      border-[#402326]
-                      bg-gradient-to-r
-                      from-[#190b0e]
-                      via-[#130e10]
-                      to-[#101012]
-                      p-4
-                    "
-                  >
+                  <div className="grid grid-cols-2 overflow-hidden rounded-[12px] border border-line bg-[#0A0A0A]">
+                    <div className="border-r border-line-soft px-4 py-4">
+                      <p className="text-[11px] font-medium text-[#6F6F78]">
+                        Overall tier
+                      </p>
 
-                    <div
-                      className="
-                        absolute
-                        right-0
-                        top-0
-                        w-28
-                        h-28
-                        rounded-full
-                        bg-red-600/10
-                        blur-[45px]
-                      "
-                    />
-
-                    <div className="relative flex items-center justify-between">
-
-                      <div>
-
-                        <p
-                          className="
-                            text-[10px]
-                            uppercase
-                            tracking-[0.2em]
-                            font-bold
-                            text-white
-                          "
-                        >
-                          Overall Rating
-                        </p>
-
-                        <p className="mt-1 text-xs text-white">
-                          Across all gamemodes
-                        </p>
-
-                      </div>
-
-                      <div className="text-right">
-
-                        <p
-                          className={`text-3xl font-black ${
-                            player?.overall?.tier
-                              ? getTierColor(player?.overall?.tier)
-                              : "text-white"
-                          }`}
-                        >
-                          {player?.overall?.tier || "Unranked"}
-                        </p>
-
-                        <p className="text-[10px] text-white font-bold">
-                          {player?.overall?.points || 0} POINTS
-                        </p>
-
-                      </div>
-
+                      <p
+                        className={`mt-1.5 text-[26px] font-bold leading-none tracking-[-0.03em] ${getTierText(
+                          player?.overall?.tier
+                        )}`}
+                      >
+                        {player?.overall?.tier || "Unranked"}
+                      </p>
                     </div>
 
+                    <div className="px-4 py-4">
+                      <p className="text-[11px] font-medium text-[#6F6F78]">
+                        Points
+                      </p>
+
+                      <p className="mt-1.5 text-[26px] font-bold leading-none tabular-nums text-white">
+                        {player?.overall?.points || 0}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* ================= GAMEMODES ================= */}
+                  <div className="mb-2 mt-5 flex items-center justify-between gap-3">
+                    <p className="text-[13px] font-semibold text-[#D4D4D8]">
+                      Gamemode tiers
+                    </p>
 
-                  <div className="grid grid-cols-4 gap-2.5 mt-4">
+                    <span className="text-[11px] text-[#6F6F78]">
+                      Tier placement
+                    </span>
+                  </div>
 
+                  <div className="grid grid-cols-4 gap-2">
                     <Game
                       icon="/icons/sword.svg"
                       name="Sword"
@@ -308,85 +205,73 @@ export default function PlayerPopup({
                       name="Crystal"
                       tier={player.crystal?.tier}
                     />
-
                   </div>
                 </>
               ) : (
+                <div className="overflow-hidden rounded-[12px] border border-line bg-[#0A0A0A]">
+                  <div className="flex items-center justify-between gap-3 border-b border-line-soft px-4 py-3">
+                    <span className="text-[13px] font-semibold text-[#D4D4D8]">
+                      {mode} tier
+                    </span>
 
-                /* ================= SINGLE MODE ================= */
-
-                <div
-                  className="
-                    relative
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-[#402326]
-                    bg-gradient-to-r
-                    from-[#190b0e]
-                    via-[#130e10]
-                    to-[#101012]
-                    p-6
-                  "
-                >
-
-                  <div className="text-center">
-
-                    <p
-                      className="
-                        text-xs
-                        uppercase
-                        tracking-[0.2em]
-                        text-gray-400
-                        font-bold
-                      "
-                    >
-                      {mode}
-                    </p>
-
-                    <p
-                      className={`mt-3 text-5xl font-black ${
-                        player?.[mode]?.tier
-                          ? getTierColor(player?.[mode]?.tier)
-                          : "text-white"
-                      }`}
-                    >
-                      {player?.[mode]?.tier || "Unranked"}
-                    </p>
-
-                    <p className="mt-2 text-xs text-white font-bold">
-                      {player?.[mode]?.points || 0} POINTS
-                    </p>
-
+                    <span className="text-[11px] text-[#6F6F78]">
+                      KairoTiers
+                    </span>
                   </div>
 
-                </div>
+                  <div className="flex items-center gap-4 px-4 py-5">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-[#151111]">
+                      <img
+                        src={modeIcons[mode] || "/icons/overall.svg"}
+                        alt=""
+                        className="h-6 w-6 object-contain"
+                      />
+                    </span>
 
+                    <div>
+                      <p
+                        className={`text-[32px] font-bold leading-none tracking-[-0.04em] ${getTierText(
+                          player?.[mode]?.tier
+                        )}`}
+                      >
+                        {player?.[mode]?.tier || "Unranked"}
+                      </p>
+
+                      <p className="mt-1.5 text-[12px] text-[#6F6F78]">
+                        <span className="font-semibold tabular-nums text-[#A1A1AA]">
+                          {player?.[mode]?.points || 0}
+                        </span>{" "}
+                        points
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )}
 
-              {/* ================= CLOSE BUTTON ================= */}
-
               <button
+                type="button"
                 onClick={onClose}
                 className="
-                  mt-4
+                  mt-5
+                  h-11
                   w-full
-                  rounded-2xl
-                  bg-red-600
-                  hover:bg-red-700
-                  hover:shadow-[0_0_25px_rgba(220,38,38,0.25)]
-                  py-3
-                  font-bold
-                  text-white
-                  transition-all
+                  rounded-[9px]
+                  border
+                  border-line
+                  bg-[#0A0A0A]
+                  text-[14px]
+                  font-semibold
+                  text-[#D4D4D8]
+                  transition-colors
                   duration-200
+                  hover:border-line-red
+                  hover:bg-surface-hover
+                  hover:text-white
                 "
               >
                 Close
               </button>
-
             </div>
-
           </motion.div>
         </motion.div>
       )}
@@ -394,145 +279,22 @@ export default function PlayerPopup({
   );
 }
 
-
 /* ========================================================= */
-/* TIER COLOR */
-/* ========================================================= */
-
-function getTierColor(tier) {
-  if (!tier) return "text-white";
-
-  const value = tier.toUpperCase();
-
-  if (value.includes("HT1")) return "text-yellow-400";
-  if (value.includes("LT1")) return "text-yellow-300";
-
-  if (value.includes("HT2")) return "text-blue-400";
-  if (value.includes("LT2")) return "text-blue-300";
-
-  if (value.includes("HT3")) return "text-orange-400";
-  if (value.includes("LT3")) return "text-orange-300";
-
-  if (value.includes("HT4")) return "text-purple-400";
-  if (value.includes("LT4")) return "text-purple-300";
-
-  if (value.includes("HT5")) return "text-gray-300";
-  if (value.includes("LT5")) return "text-gray-400";
-
-  return "text-gray-400";
-}
-
-
-/* ========================================================= */
-/* GAMEMODE CARD */
+/* GAMEMODE CELL                                             */
 /* ========================================================= */
 
 function Game({ icon, name, tier }) {
-  const tierColor = getTierColor(tier);
-
   return (
-    <div
-      className="
-        group
-        relative
-        overflow-hidden
-        rounded-xl
-        border
-        border-[#2b2b30]
-        bg-[#141416]
-        py-2.5
-        px-1
-        text-center
-        transition-all
-        duration-200
-        hover:-translate-y-1
-        hover:border-[#4a292d]
-        hover:bg-[#191416]
-        hover:shadow-[0_6px_20px_rgba(0,0,0,0.3)]
-      "
-    >
+    <div className="rounded-[9px] border border-line bg-[#0A0A0A] px-1 py-2.5 text-center">
+      <img src={icon} alt="" className="mx-auto h-[18px] w-[18px] object-contain" />
 
-      {/* TOP RED LINE */}
-
-      <div
-        className="
-          absolute
-          top-0
-          left-1/2
-          -translate-x-1/2
-          w-0
-          h-[2px]
-          bg-red-600
-          group-hover:w-9
-          shadow-[0_0_10px_rgba(220,38,38,0.7)]
-          transition-all
-          duration-200
-        "
-      />
-
-      {/* ICON */}
-
-      <div
-        className="
-          w-9
-          h-9
-          mx-auto
-          rounded-lg
-          flex
-          items-center
-          justify-center
-          bg-[#0d0d0f]
-          border
-          border-[#29292e]
-          group-hover:border-[#3c3032]
-          transition-all
-        "
-      >
-
-        <img
-          src={icon}
-          alt={name}
-          className="
-            w-[22px]
-            h-[22px]
-            object-contain
-            opacity-90
-            group-hover:opacity-100
-            group-hover:scale-110
-            transition-all
-          "
-        />
-
-      </div>
-
-      {/* NAME */}
+      <p className="mt-1.5 text-[10px] font-medium text-[#6F6F78]">{name}</p>
 
       <p
-        className="
-          mt-1.5
-          text-[9px]
-          uppercase
-          tracking-wider
-          font-bold
-          text-gray-300
-        "
-      >
-        {name}
-      </p>
-
-      {/* TIER */}
-
-      <p
-        className={`
-          mt-0.5
-          text-sm
-          font-black
-          ${tierColor}
-        `}
+        className={`mt-0.5 text-[11px] font-semibold ${getTierText(tier)}`}
       >
         {tier || "—"}
       </p>
-
     </div>
   );
 }

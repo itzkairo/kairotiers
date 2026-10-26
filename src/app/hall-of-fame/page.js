@@ -26,251 +26,154 @@ export default function HallOfFame() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-
+    <div className="min-h-screen bg-background text-white">
       {/* ================= NAVBAR ================= */}
 
       <Navbar />
 
       {/* ================= PAGE ================= */}
 
-      <main className="pt-6 md:pt-8 pb-12 px-4 sm:px-6 md:px-8">
-
-        <div className="w-full max-w-[1270px] mx-auto">
-
+      <main className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1320px]">
           {/* ================= HEADER ================= */}
 
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="mb-8"
+            transition={{ duration: 0.3 }}
+            className="flex flex-col gap-5 border-b border-line-soft pb-7 pt-8 sm:flex-row sm:items-end sm:justify-between sm:pb-8 sm:pt-10"
           >
+            <div>
+              <p className="text-[12px] font-semibold text-[#E05252]">
+                Community archive
+              </p>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight">
-              <span className="text-white">
-                Hall Of{" "}
-              </span>
+              <h1 className="mt-2 text-[36px] font-bold leading-none tracking-[-0.045em] text-white sm:text-[46px]">
+                Hall Of Fame
+              </h1>
 
-              <span className="text-red-600">
-                Fame
-              </span>
-            </h1>
+              <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-[#A1A1AA]">
+                Players who have made their mark in KairoTiers.
+              </p>
+            </div>
 
-            <p className="mt-2 text-gray-500 text-sm sm:text-base">
-              Players who have made their mark in KairoTiers.
-            </p>
-
+            <div className="flex items-center gap-2">
+              <p className="text-[13px] font-medium text-[#8B8B94]">
+                {players.length} {players.length === 1 ? "inductee" : "inductees"}
+              </p>
+            </div>
           </motion.div>
 
           {/* ================= CONTENT ================= */}
 
-          {loading ? (
-
-            <div
-              className="
-                rounded-2xl
-                border
-                border-[#291416]
-                bg-gradient-to-br
-                from-[#160b0d]
-                via-[#0d0d0f]
-                to-[#090909]
-                py-20
-                text-center
-              "
-            >
-              <div className="text-gray-500 font-semibold">
-                Loading Hall Of Fame...
+          <div className="mt-6">
+            {loading ? (
+              <div
+                className="
+                  rounded-[12px]
+                  border
+                  border-line
+                  bg-surface
+                  px-6
+                  py-20
+                  text-center
+                "
+              >
+                <p className="text-[14px] font-medium text-[#D4D4D8]">
+                  Loading Hall Of Fame...
+                </p>
               </div>
-            </div>
+            ) : players.length === 0 ? (
+              <div
+                className="
+                  rounded-[12px]
+                  border
+                  border-dashed
+                  border-line-red
+                  bg-surface
+                  px-6
+                  py-20
+                  text-center
+                "
+              >
+                <h2 className="text-[18px] font-semibold text-[#D4D4D8]">
+                  No Hall Of Fame players
+                </h2>
 
-          ) : players.length === 0 ? (
-
-            <div
-              className="
-                rounded-2xl
-                border
-                border-dashed
-                border-[#3b2022]
-                bg-[#0b0a0b]
-                py-20
-                text-center
-              "
-            >
-
-              <h2 className="text-xl font-bold text-gray-300">
-                No Hall Of Fame Players
-              </h2>
-
-              <p className="text-gray-600 text-sm mt-2">
-                Hall Of Fame players will appear here.
-              </p>
-
-            </div>
-
-          ) : (
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-              {players.map((player, index) => (
-
-                <motion.div
-                  key={player.id}
-                  initial={{
-                    opacity: 0,
-                    y: 15,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  transition={{
-                    delay: Math.min(index * 0.06, 0.4),
-                    duration: 0.35,
-                  }}
-                  className="
-                    group
-                    relative
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-[#321719]
-                    bg-gradient-to-br
-                    from-[#160b0d]
-                    via-[#0e0d0f]
-                    to-[#090909]
-                    p-5
-                    sm:p-6
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    hover:border-[#71262d]
-                    hover:shadow-[0_12px_40px_rgba(170,30,45,0.18)]
-                  "
-                >
-
-                  {/* RED GLOW */}
-
-                  <div
+                <p className="mt-2 text-[13px] text-[#6F6F78]">
+                  Hall Of Fame players will appear here.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {players.map((player, index) => (
+                  <motion.article
+                    key={player.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: Math.min(index * 0.04, 0.3),
+                      duration: 0.25,
+                    }}
                     className="
-                      pointer-events-none
-                      absolute
-                      -top-20
-                      -right-20
-                      w-40
-                      h-40
-                      rounded-full
-                      bg-red-600/10
-                      blur-3xl
-                      opacity-0
-                      group-hover:opacity-100
-                      transition-opacity
-                      duration-300
+                      flex
+                      flex-col
+                      rounded-[12px]
+                      border
+                      border-line
+                      bg-surface
+                      p-5
+                      transition-colors
+                      duration-200
+                      hover:border-line-red
                     "
-                  />
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <img
+                        src={
+                          player.image ||
+                          `https://mc-heads.net/avatar/${player.ign}/128`
+                        }
+                        alt={player.ign}
+                        className="
+                          h-14
+                          w-14
+                          shrink-0
+                          rounded-[10px]
+                          border
+                          border-line
+                          bg-[#0A0A0A]
+                          object-cover
+                        "
+                        onError={(event) => {
+                          event.currentTarget.src =
+                            "https://mc-heads.net/avatar/Steve/128";
+                        }}
+                      />
 
-                  {/* TOP RED LINE */}
+                      <div className="min-w-0">
+                        <h2 className="truncate text-[17px] font-semibold tracking-[-0.02em] text-white">
+                          {player.ign}
+                        </h2>
 
-                  <div
-                    className="
-                      absolute
-                      top-0
-                      left-8
-                      right-8
-                      h-[1px]
-                      bg-red-600/60
-                      shadow-[0_0_15px_rgba(220,38,38,0.5)]
-                    "
-                  />
-
-                  {/* PLAYER */}
-
-                  <div className="relative flex items-start gap-5">
-
-                    {/* AVATAR */}
-
-                    <img
-                      src={
-                        player.image ||
-                        `https://mc-heads.net/avatar/${player.ign}/128`
-                      }
-                      alt={player.ign}
-                      className="
-                        w-20
-                        h-20
-                        sm:w-24
-                        sm:h-24
-                        shrink-0
-                        rounded-xl
-                        border
-                        border-[#3a2022]
-                        bg-[#090909]
-                        object-cover
-                        transition-transform
-                        duration-300
-                        group-hover:scale-105
-                      "
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://mc-heads.net/avatar/Steve/128";
-                      }}
-                    />
-
-                    {/* INFO */}
-
-                    <div className="min-w-0 pt-1">
-
-                      <div className="text-[10px] uppercase tracking-[0.18em] text-red-500/70 font-black mb-1">
-                        Hall Of Fame
+                        <p className="mt-0.5 text-[12px] font-medium text-[#E05252]">
+                          {player.title}
+                        </p>
                       </div>
-
-                      <h2 className="text-2xl sm:text-3xl font-black truncate">
-                        {player.ign}
-                      </h2>
-
-                      <p className="mt-1 text-red-500 font-bold">
-                        {player.title}
-                      </p>
-
                     </div>
 
-                  </div>
-
-                  {/* DESCRIPTION */}
-
-                  {player.description && (
-
-                    <div
-                      className="
-                        relative
-                        mt-5
-                        pt-4
-                        border-t
-                        border-[#241416]
-                      "
-                    >
-
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                    {player.description && (
+                      <p className="mt-4 border-t border-line-soft pt-3.5 text-[13px] leading-relaxed text-[#A1A1AA]">
                         {player.description}
                       </p>
-
-                    </div>
-
-                  )}
-
-                </motion.div>
-
-              ))}
-
-            </div>
-
-          )}
-
+                    )}
+                  </motion.article>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-
       </main>
-
     </div>
   );
 }

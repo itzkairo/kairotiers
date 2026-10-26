@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { CheckIcon, CopyIcon } from "./CodeIcons";
+
 export default function ServerIP() {
   const [copied, setCopied] = useState(false);
 
@@ -21,7 +23,7 @@ export default function ServerIP() {
   };
 
   return (
-    <div className="flex justify-center px-4 pt-4 pb-2">
+    <div className="flex justify-center px-4 pb-2 pt-4">
       <button
         type="button"
         onClick={copyIP}
@@ -30,50 +32,51 @@ export default function ServerIP() {
           flex
           items-center
           gap-3
-          px-5
-          py-3
-          rounded-2xl
+          rounded-[8px]
           border
-          border-[#3b1717]
-          bg-[#0d0b0c]
-          hover:bg-[#140b0d]
-          hover:border-red-700
-          transition-all
+          border-line
+          bg-surface
+          px-4
+          py-2.5
+          transition-colors
           duration-200
-          shadow-[0_0_25px_rgba(220,38,38,0.08)]
+          hover:border-line-red
+          hover:bg-surface-hover
         "
       >
-        <span
-          className="
-            w-2.5
-            h-2.5
-            rounded-full
-            bg-green-500
-            shadow-[0_0_10px_rgba(34,197,94,0.8)]
-            flex-shrink-0
-          "
-        />
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
 
-        <div className="text-left">
-          <p className="text-[10px] uppercase tracking-[0.18em] text-gray-500 font-bold">
+        <span className="text-left">
+          <span className="block text-[11px] font-medium text-[#6F6F78]">
             Server IP
-          </p>
+          </span>
 
-          <p className="text-sm sm:text-base font-black text-white">
+          <span className="mono-value mt-1 block text-[13px] font-medium text-white">
             {ip}
-          </p>
-        </div>
+          </span>
+        </span>
 
         <span
+          aria-live="polite"
           className="
             ml-1
-            text-xs
-            font-bold
-            text-gray-500
-            group-hover:text-red-400
+            flex
+            items-center
+            gap-1.5
+            text-[10px]
+            font-medium
+            text-[#6F6F78]
             transition-colors
+            duration-200
+            group-hover:text-[#F87171]
           "
         >
+          {copied ? (
+            <CheckIcon className="h-3.5 w-3.5" />
+          ) : (
+            <CopyIcon className="h-3.5 w-3.5" />
+          )}
+
           {copied ? "Copied!" : "Copy"}
         </span>
       </button>

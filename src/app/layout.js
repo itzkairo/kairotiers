@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import MotionProvider from "./components/MotionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +27,10 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body>
-  <div className="grid-overlay"></div>
+        <div className="grid-overlay"></div>
 
-  {children}
-</body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
 
     </html>
   );

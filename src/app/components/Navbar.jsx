@@ -2,448 +2,253 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import SearchBar from "./SearchBar";
+import {
+  ArrowUpRightIcon,
+  ChevronRightIcon,
+  CloseIcon,
+  LogoMark,
+  MenuIcon,
+  NavIcon,
+} from "./CodeIcons";
+
+const navItems = [
+  { href: "/", icon: "home", label: "Home" },
+  { href: "/ranking", icon: "ranking", label: "Ranking" },
+  { href: "/hall-of-fame", icon: "hall", label: "Hall Of Fame" },
+];
 
 export default function Navbar({ search, setSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const navItems = [
-    {
-      href: "/",
-      icon: "/icons/home.svg",
-      label: "Home",
-    },
-    {
-      href: "/ranking",
-      icon: "/icons/ranking.svg",
-      label: "Ranking",
-    },
-    {
-      href: "/hall-of-fame",
-      icon: "/icons/fame.svg",
-      label: "Hall Of Fame",
-    },
-  ];
+  const isActive = (href) =>
+    href === "/" ? pathname === "/" : pathname?.startsWith(href);
 
   return (
-    <nav className="w-full pt-4 md:pt-6 px-3 sm:px-6 relative z-50">
-      <div
-        className="
-          w-full
-          max-w-[1480px]
-          mx-auto
-          h-[62px]
-          md:h-[66px]
-          rounded-2xl
-          border
-          border-[#3a3d43]
-          bg-[#080b10]/95
-          backdrop-blur-xl
-          shadow-[0_10px_35px_rgba(0,0,0,0.35)]
-        "
-      >
-
-        {/* ================= DESKTOP ================= */}
-
-        <div className="hidden md:flex h-full items-center px-5 lg:px-7 relative">
-
-          {/* LOGO */}
+    <nav
+      aria-label="Primary"
+      className="sticky top-0 z-50 w-full border-b border-line-soft bg-[#050505]"
+    >
+      <div className="mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center gap-4">
+          {/* ================= BRAND ================= */}
 
           <Link
             href="/"
-            className="
-              text-3xl
-              lg:text-4xl
-              font-black
-              tracking-tight
-              shrink-0
-            "
+            aria-label="KairoTiers home"
+            className="group flex shrink-0 items-center gap-2.5"
           >
-            <span className="text-red-600">Kairo</span>
-            <span className="text-white">Tiers</span>
+            <LogoMark className="h-7 w-7 transition-transform duration-200 group-hover:scale-105" />
+
+            <span className="text-[17px] font-semibold leading-none tracking-[-0.03em] text-white">
+              Kairo<span className="text-[#E05252]">Tiers</span>
+            </span>
           </Link>
 
+          {/* ================= DESKTOP NAV ================= */}
 
-          {/* ================= CENTER NAV ================= */}
+          <div className="ml-4 hidden h-16 items-stretch md:flex">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
 
-          <div
-            className="
-              absolute
-              left-1/2
-              top-1/2
-              -translate-x-1/2
-              -translate-y-1/2
-              flex
-              items-center
-              gap-2
-              lg:gap-3
-            "
-          >
-
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="
-                  group
-                  flex
-                  items-center
-                  justify-center
-                  gap-3
-                  h-12
-                  lg:h-13
-                  px-6
-                  lg:px-7
-                  rounded-xl
-                  bg-transparent
-                  border
-                  border-transparent
-                  text-gray-300
-                  font-semibold
-                  text-base
-                  lg:text-lg
-                  whitespace-nowrap
-                  hover:bg-[#15191f]/80
-                  hover:text-white
-                  hover:border-transparent
-                  transition-all
-                  duration-200
-                "
-              >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className="
-                    w-5
-                    h-5
-                    lg:w-[21px]
-                    lg:h-[21px]
-                    object-contain
-                    opacity-80
-                    group-hover:opacity-100
-                    group-hover:scale-110
-                    transition-all
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`
+                    flex
+                    items-center
+                    gap-2
+                    border-b-2
+                    px-3
+                    text-[14px]
+                    font-medium
+                    transition-colors
                     duration-200
-                  "
-                />
+                    lg:px-4
+                    ${
+                      active
+                        ? "border-[#DC2626] text-white"
+                        : "border-transparent text-[#9A9AA3] hover:text-white"
+                    }
+                  `}
+                >
+                  <NavIcon
+                    name={item.icon}
+                    className={`h-4 w-4 shrink-0 ${
+                      active ? "text-red-500" : "text-[#6F6F78]"
+                    }`}
+                  />
 
-                <span>
-                  {item.label}
-                </span>
-              </Link>
-            ))}
+                  <span className="whitespace-nowrap">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
 
+          {/* ================= DESKTOP ACTIONS ================= */}
 
-            {/* DISCORD */}
-
+          <div className="ml-auto hidden shrink-0 items-center gap-2 md:flex">
             <a
               href="https://discord.gg/EX7ZAaUyVt"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Join the KairoTiers Discord"
               className="
-                group
                 flex
+                h-9
+                w-9
                 items-center
                 justify-center
-                gap-3
-                h-12
-                lg:h-13
-                px-6
-                lg:px-7
-                rounded-xl
-                bg-transparent
+                rounded-[9px]
                 border
-                border-transparent
-                text-gray-300
-                font-semibold
-                text-base
-                lg:text-lg
-                whitespace-nowrap
-                hover:bg-[#15191f]/80
-                hover:text-white
-                hover:border-transparent
-                transition-all
+                border-line
+                bg-surface
+                text-[#9A9AA3]
+                transition-colors
                 duration-200
+                hover:border-line-red
+                hover:bg-surface-hover
+                hover:text-white
               "
             >
-              <img
-                src="/icons/discord.svg"
-                alt="Discord"
-                className="
-                  w-5
-                  h-5
-                  lg:w-[21px]
-                  lg:h-[21px]
-                  object-contain
-                  opacity-80
-                  group-hover:opacity-100
-                  group-hover:scale-110
-                  transition-all
-                  duration-200
-                "
-              />
-
-              <span>Discord</span>
+              <NavIcon name="discord" className="h-[18px] w-[18px]" />
             </a>
 
+            <div className="w-[170px] lg:w-[220px]">
+              <SearchBar search={search} setSearch={setSearch} />
+            </div>
           </div>
 
-
-          {/* ================= SEARCH RIGHT ================= */}
-
-          <div className="ml-auto w-[220px] lg:w-[250px]">
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
-          </div>
-
-        </div>
-
-
-        {/* ================= MOBILE ================= */}
-
-        <div className="md:hidden h-full flex items-center justify-between px-4">
-
-          <Link
-            href="/"
-            className="text-2xl font-black tracking-tight"
-          >
-            <span className="text-red-600">Kairo</span>
-            <span className="text-white">Tiers</span>
-          </Link>
-
-
-          {/* HAMBURGER */}
+          {/* ================= MOBILE TOGGLE ================= */}
 
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             className="
-              w-10
-              h-10
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
+              ml-auto
               flex
-              flex-col
+              h-10
+              w-10
               items-center
               justify-center
-              gap-1.5
-              hover:bg-[#15191f]/80
-              transition-all
+              rounded-[9px]
+              border
+              border-line
+              bg-surface
+              text-[#A1A1AA]
+              transition-colors
+              duration-200
+              hover:border-line-red
+              hover:bg-surface-hover
+              hover:text-white
+              md:hidden
             "
-            aria-label="Open navigation"
           >
-
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-gray-300
-                rounded-full
-                transition-all
-                duration-200
-                ${menuOpen ? "rotate-45 translate-y-[5px]" : ""}
-              `}
-            />
-
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-gray-300
-                rounded-full
-                transition-all
-                duration-200
-                ${menuOpen ? "opacity-0" : ""}
-              `}
-            />
-
-            <span
-              className={`
-                block
-                w-5
-                h-[2px]
-                bg-gray-300
-                rounded-full
-                transition-all
-                duration-200
-                ${menuOpen ? "-rotate-45 -translate-y-[5px]" : ""}
-              `}
-            />
-
+            {menuOpen ? (
+              <CloseIcon className="h-[18px] w-[18px]" />
+            ) : (
+              <MenuIcon className="h-[18px] w-[18px]" />
+            )}
           </button>
-
         </div>
-
       </div>
 
-
-      {/* ================= MOBILE MENU ================= */}
+      {/* ================= MOBILE DRAWER ================= */}
 
       {menuOpen && (
         <div
-          className="
-            md:hidden
-            w-full
-            max-w-[1480px]
-            mx-auto
-            mt-2
-            p-2
-            rounded-2xl
-            border
-            border-[#353941]
-            bg-[#080b10]/98
-            backdrop-blur-xl
-            shadow-[0_15px_40px_rgba(0,0,0,0.45)]
-          "
+          id="mobile-navigation"
+          className="border-t border-line-soft bg-[#070707] md:hidden"
         >
+          <div className="mx-auto w-full max-w-[1320px] px-4 py-4 sm:px-6">
+            <div className="grid gap-1">
+              {navItems.map((item) => {
+                const active = isActive(item.href);
 
-          {/* HOME */}
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={`
+                      flex
+                      items-center
+                      gap-3
+                      rounded-[9px]
+                      px-3
+                      py-3
+                      text-[15px]
+                      font-medium
+                      transition-colors
+                      duration-200
+                      ${
+                        active
+                          ? "bg-[#151111] text-white"
+                          : "text-[#A1A1AA] hover:bg-surface-hover hover:text-white"
+                      }
+                    `}
+                  >
+                    <NavIcon
+                      name={item.icon}
+                      className={`h-[18px] w-[18px] shrink-0 ${
+                        active ? "text-red-500" : "text-[#6F6F78]"
+                      }`}
+                    />
 
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/home.svg"
-              alt="Home"
-              className="w-6 h-6 object-contain"
-            />
+                    <span className="flex-1">{item.label}</span>
 
-            <span className="text-gray-200 font-semibold text-base">
-              Home
-            </span>
-          </Link>
+                    <ChevronRightIcon className="h-3.5 w-3.5 text-[#4A4A52]" />
+                  </Link>
+                );
+              })}
 
+              <a
+                href="https://discord.gg/EX7ZAaUyVt"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="
+                  flex
+                  items-center
+                  gap-3
+                  rounded-[9px]
+                  px-3
+                  py-3
+                  text-[15px]
+                  font-medium
+                  text-[#A1A1AA]
+                  transition-colors
+                  duration-200
+                  hover:bg-surface-hover
+                  hover:text-white
+                "
+              >
+                <NavIcon
+                  name="discord"
+                  className="h-[18px] w-[18px] shrink-0 text-[#6F6F78]"
+                />
 
-          {/* RANKING */}
+                <span className="flex-1">Discord</span>
 
-          <Link
-            href="/ranking"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/ranking.svg"
-              alt="Ranking"
-              className="w-6 h-6 object-contain"
-            />
+                <ArrowUpRightIcon className="h-3.5 w-3.5 text-[#4A4A52]" />
+              </a>
+            </div>
 
-            <span className="text-gray-200 font-semibold text-base">
-              Ranking
-            </span>
-          </Link>
-
-
-          {/* HALL OF FAME */}
-
-          <Link
-            href="/hall-of-fame"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/fame.svg"
-              alt="Hall Of Fame"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Hall Of Fame
-            </span>
-          </Link>
-
-
-          {/* DISCORD */}
-
-          <a
-            href="https://discord.gg/EX7ZAaUyVt"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMenuOpen(false)}
-            className="
-              flex
-              items-center
-              gap-4
-              px-5
-              py-4
-              mt-1
-              rounded-xl
-              bg-transparent
-              border
-              border-transparent
-              hover:bg-[#15191f]/80
-              transition-all
-            "
-          >
-            <img
-              src="/icons/discord.svg"
-              alt="Discord"
-              className="w-6 h-6 object-contain"
-            />
-
-            <span className="text-gray-200 font-semibold text-base">
-              Discord
-            </span>
-          </a>
-
-
-          {/* SEARCH */}
-
-          <div className="mt-2">
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-            />
+            <div className="mt-4 border-t border-line-soft pt-4">
+              <SearchBar search={search} setSearch={setSearch} />
+            </div>
           </div>
-
         </div>
       )}
-
     </nav>
   );
 }
