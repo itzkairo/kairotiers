@@ -194,7 +194,7 @@ export default function Home() {
                     Server address
                   </p>
                   <p className="code mt-1 truncate text-[14px] font-medium text-white sm:mt-1.5">
-                    play.wolfmc.fun
+                    play.swiftmc.fun
                   </p>
                 </div>
               </div>
@@ -444,7 +444,7 @@ export default function Home() {
                     Discord
                   </a>
                   <span className="code text-[12px] text-[#8B8B94]">
-                    play.wolfmc.fun
+                    play.swiftmc.fun
                   </span>
                 </div>
               </div>

@@ -7,7 +7,7 @@ import { CheckIcon, CopyIcon } from "./CodeIcons";
 export default function ServerIP() {
   const [copied, setCopied] = useState(false);
 
-  const ip = "play.wolfmc.fun";
+  const ip = "play.swiftmc.fun";
 
   const copyIP = async () => {
     try {

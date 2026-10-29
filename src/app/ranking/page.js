@@ -105,7 +105,7 @@ function RankingContent() {
 
   const copyIP = async () => {
     try {
-      await navigator.clipboard.writeText("play.wolfmc.fun");
+      await navigator.clipboard.writeText("play.swiftmc.fun");
 
       setIpCopied(true);
 
@@ -183,7 +183,7 @@ function RankingContent() {
                   aria-live="polite"
                   className="code text-[12px] font-medium text-[#D4D4D8]"
                 >
-                  {ipCopied ? "Copied" : "play.wolfmc.fun"}
+                  {ipCopied ? "Copied" : "play.swiftmc.fun"}
                 </span>
               </button>
             </div>
